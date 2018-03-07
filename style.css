@@ -1,0 +1,11 @@
+button {
+	display:block;
+	width:50%;
+	margin: 0 auto;
+}
+
+div {
+    position: absolute;
+    z-index:2;
+    background-color: black;
+}
