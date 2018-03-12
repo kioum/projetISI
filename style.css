@@ -5,7 +5,11 @@ button {
 }
 
 div {
-    position: absolute;
-    z-index:2;
+	display:inline-block;
+	float:none;
     background-color: black;
+}
+
+div.choixEtage {
+	vertical-align:middle;
 }

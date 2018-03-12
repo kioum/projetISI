@@ -36,7 +36,7 @@ var Piece = function (name, x, y, w, h) {
 }
 
 Piece.prototype.affichage = function(e){
-	this.display.style.position = "absolu";
+	this.display.style.position = "absolute";
 	this.display.style.left = this.x + "px";
 	this.display.style.top = this.y + "px";
 	this.display.style.width = this.width + "px";
@@ -56,141 +56,26 @@ var Action = function(){
 	this.onOff = false; // Si l'objet est on ou off
 }
 
+//Permet d'afficher la bonne page
+var affichagePage = function(doc){
+	document.getElementsByName("btnAccueil").forEach(function(doc) {
+		doc.style.display = 'none';
+	});
+	if(doc.id == "myhome"){
+		home.etages[0].affichage();
+	}	
+}
+
 // Simule la recuperation des données de bases de la maison
 var home = new Maison();
 
 var etage1 = new Etage();
 
-var chambre = new Piece("Chambre", 0,0,200,100);
-var wc = new Piece("wc", 100,110,100,100);
+var chambre = new Piece("Chambre", 0,0,210,100);
+var wc = new Piece("wc", 110,110,100,100);
 var cuisine = new Piece("cuisine", 0,110,100,100);
 
 etage1.pieces[0] = chambre;
 etage1.pieces[1] = wc;
 etage1.pieces[2] = cuisine;
 home.etages[0] = etage1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-console.log("fatal error");
