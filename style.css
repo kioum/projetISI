@@ -4,12 +4,6 @@ button {
 	margin: 0 auto;
 }
 
-div {
-	display:inline-block;
-	float:none;
-    background-color: black;
-}
-
 div.choixEtage {
-	vertical-align:middle;
+  display:absolute;
 }

@@ -14,11 +14,12 @@ var Etage = function () {
 //for each pour affichage d'un etage( ensemble de piece)
 Etage.prototype.affichage = function(){
 	var etage = this;
+	document.body.appendChild(this.display);
 	this.pieces.forEach(function(element) {
 		element.affichage(etage);
 	});
-	document.body.appendChild(this.display);
 }
+
 var Piece = function (name, x, y, w, h) {
 	this.name = name; // Nom de la piece
 	this.x = x; // Position x de la piece
@@ -36,9 +37,13 @@ var Piece = function (name, x, y, w, h) {
 }
 
 Piece.prototype.affichage = function(e){
+  //recupere la valeur du display parent
+  var x = e.display.offsetLeft;
+  var y = e.display.offsetTop;
+  
 	this.display.style.position = "absolute";
-	this.display.style.left = this.x + "px";
-	this.display.style.top = this.y + "px";
+	this.display.style.left = (x + this.x) + "px";
+	this.display.style.top = (y + this.y) + "px";
 	this.display.style.width = this.width + "px";
 	this.display.style.height = this.height + "px";
 
@@ -58,9 +63,7 @@ var Action = function(){
 
 //Permet d'afficher la bonne page
 var affichagePage = function(doc){
-	document.getElementsByName("btnAccueil").forEach(function(doc) {
-		doc.style.display = 'none';
-	});
+	document.getElementById("pageAccueil").style.display = "none";
 	if(doc.id == "myhome"){
 		home.etages[0].affichage();
 	}	
