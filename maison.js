@@ -1,10 +1,11 @@
 var Maison = function () {
+  this.selectEtage = 0;
 	this.etages = []; // les etages de la maison
 }
 
-var Etage = function () {
+var Etage = function (name) {
+  this.name = name;
 	this.display = document.createElement("div");
-	this.display.id = "ici c'est un etage lol";
 	this.display.style.width = 1000 + "px";
 	this.display.style.height = 1000 + "px";
 	this.display.style.backgroundColor = "grey";
@@ -14,6 +15,7 @@ var Etage = function () {
 //for each pour affichage d'un etage( ensemble de piece)
 Etage.prototype.affichage = function(){
 	var etage = this;
+	document.body.removeChild(document.body.lastChild);
 	document.body.appendChild(this.display);
 	this.pieces.forEach(function(element) {
 		element.affichage(etage);
@@ -63,22 +65,43 @@ var Action = function(){
 
 //Permet d'afficher la bonne page
 var affichagePage = function(doc){
-	document.getElementById("pageAccueil").style.display = "none";
+  var accueil = document.getElementById("pageAccueil");
+  accueil.style.display = "none";
+  
 	if(doc.id == "myhome"){
-		home.etages[0].affichage();
+	  var i = 0;
+		home.etages.forEach(function(etage) {
+		  var tmp = document.createElement("button");
+		  tmp.id = "etage" + i;
+		  tmp.innerHTML = etage.name;
+		  tmp.onclick = function(){
+		    home.selectEtage = tmp.id.substring(5, 6);
+		    home.etages[home.selectEtage].affichage();
+		  };
+		  document.getElementById("choixEtage").appendChild(tmp);
+		  i++;
+	  });
+	  home.etages[home.selectEtage].affichage();
 	}	
 }
 
 // Simule la recuperation des données de bases de la maison
 var home = new Maison();
 
-var etage1 = new Etage();
+var etage1 = new Etage("1er Etage");
+var etage2 = new Etage("2eme Etage");
 
 var chambre = new Piece("Chambre", 0,0,210,100);
 var wc = new Piece("wc", 110,110,100,100);
 var cuisine = new Piece("cuisine", 0,110,100,100);
+var salleDeBains = new Piece("salle de bain", 50, 105, 100, 75);
 
 etage1.pieces[0] = chambre;
 etage1.pieces[1] = wc;
 etage1.pieces[2] = cuisine;
+
+etage2.pieces[0] = chambre;
+etage2.pieces[1] = salleDeBains;
+
 home.etages[0] = etage1;
+home.etages[1] = etage2;
