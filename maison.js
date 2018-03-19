@@ -6,17 +6,15 @@ var Maison = function () {
 var Etage = function (name) {
   this.name = name;
 	this.display = document.createElement("div");
-	this.display.style.width = 1000 + "px";
-	this.display.style.height = 1000 + "px";
-	this.display.style.backgroundColor = "grey";
+	this.display.id = "etages";
 	this.pieces = []; // les pieces de l'etage
 }
 
 //for each pour affichage d'un etage( ensemble de piece)
 Etage.prototype.affichage = function(){
 	var etage = this;
-	document.body.removeChild(document.body.lastChild);
-	document.body.appendChild(this.display);
+	document.getElementById("myHome").removeChild(document.getElementById("myHome").lastChild);
+	document.getElementById("myHome").appendChild(this.display);
 	this.pieces.forEach(function(element) {
 		element.affichage(etage);
 	});
@@ -30,6 +28,9 @@ var Piece = function (name, x, y, w, h) {
 	this.height = h; // hauteur de la piece
 	this.display = document.createElement("div");
 	this.display.id = name;
+	this.onclick = function(){
+	  
+	}
 	this.objets = []; // les objets connectees de la pieces
 	
 	
@@ -67,23 +68,73 @@ var Action = function(){
 var affichagePage = function(doc){
   var accueil = document.getElementById("pageAccueil");
   accueil.style.display = "none";
+  var myhome = document.getElementById("myHome");
+  myhome.style.display = "none";
+  var mytasks = document.getElementById("myTasks");
+  mytasks.style.display = "none";
+  document.getElementById("retour").style.display = "block";
   
-	if(doc.id == "myhome"){
+  if(doc.id == "retour") doc.name = pagePrecedent;
+  
+  //MY HOME
+	if(doc.name == "myhome"){
+	  //affiche les bon elements
+	  myhome.style.display = "block";
+	  var enfant = myhome.getElementsByTagName("div");
+    for (var i = 0; i < enfant.length; i++) {
+      enfant[i].style.display = "block";
+    }
+    
+    var choixEtage = document.getElementById("choixEtage");
+    while( choixEtage.firstChild) choixEtage.removeChild( choixEtage.firstChild);
+    
+    //ajoute les boutons dinamiquement a choixEtage
 	  var i = 0;
 		home.etages.forEach(function(etage) {
 		  var tmp = document.createElement("button");
-		  tmp.id = "etage" + i;
+		  tmp.name = "etage" + i;
+		  tmp.id = "boutonsEtages";
 		  tmp.innerHTML = etage.name;
 		  tmp.onclick = function(){
-		    home.selectEtage = tmp.id.substring(5, 6);
+		    home.selectEtage = tmp.name.substring(5, 6);
 		    home.etages[home.selectEtage].affichage();
 		  };
-		  document.getElementById("choixEtage").appendChild(tmp);
+		  choixEtage.appendChild(tmp);
 		  i++;
 	  });
 	  home.etages[home.selectEtage].affichage();
-	}	
+	}
+	
+	// My TASKS
+  if(doc.name == "mytasks"){
+    //affiche les bon elements
+	  mytasks.style.display = "block";
+	  var enfant = mytasks.getElementsByTagName("Div");
+    for (var i = 0; i < enfant.length; i++) {
+      enfant[i].style.display = "block";
+    }
+  }
+  
+  // Page Accueil
+  if(doc.name == "pageAccueil"){
+    //affiche les bon elements
+    document.getElementById("retour").style.display = "none";
+	  accueil.style.display = "block";
+	  var enfant = accueil.getElementsByTagName("Div");
+    for (var i = 0; i < enfant.length; i++) {
+      enfant[i].style.display = "block";
+    }
+  }
+  
 }
+
+
+var affichagePiece = function(doc){
+  
+}
+// Variable globale
+var pagePrecedent = "pageAccueil";
+
 
 // Simule la recuperation des données de bases de la maison
 var home = new Maison();

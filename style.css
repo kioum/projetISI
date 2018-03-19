@@ -11,6 +11,7 @@ body {
 	padding: 0 10px;
 	margin: 0 auto;
 	position: relative;
+	background-color:black;
 }
 
 div#center {
@@ -27,7 +28,7 @@ div#etages {
 	margin-right: 270px;
 	margin-left: 270px;
 	
-	background-color:#AAEABB;
+	background-color:navy;
 }
 
 div#choixEtage {
@@ -35,14 +36,28 @@ div#choixEtage {
 	float: left;
 	width: 100px;
 	height:100%;
-	background-color:#FFCC00;
+	background-color:silver;
 }
 
+#boutonsEtages {
+  margin-top: 15px;
+  background-image: -webkit-linear-gradient(top, white, gray);
+  }
+
 div#titre {
+  top : 0;
 	width:740px;
 	height:50px;
-	background-color:#00ACFF;
+	text-align: center;
+	background-color: gray;
 }
+ 
+/*Texte du titre*/
+span {
+  display:inline-block;
+  line-height:1.3em;
+  vertical-align:middle;
+  }
 
 div#infoGlobale {
   /*au pied de page*/
@@ -52,7 +67,7 @@ div#infoGlobale {
 	bottom: 0;
 	left : 110px;
 	float : right;
-	background-color:#00CCFF;
+	background-color:silver;
 }
 
 div#paramGen {
@@ -62,5 +77,15 @@ div#paramGen {
 	height:100px;
 	bottom: 0;
 	float : left;
-	background-color:#33FF99;
+	background-color:gray;
+}
+
+div#myhome {
+  display:none;
+}
+div#mytasks {
+  display:none;
+}
+#retour {
+  display:none;
 }

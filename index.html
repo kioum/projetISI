@@ -5,34 +5,44 @@
     <link href="style.css" rel="stylesheet" />
   </head>
   <body>
-  <div id ="titre"> THE TITRE </div>
+  <div id ="titre"> <span> <p>SMART</p></span>
+		  <img id ="retour" src="retour.png" alt="Preferences" onclick="affichagePage(this)"/>
+	</div>
   
   <div id="pageAccueil">
-    <button id = "myhome" onclick="affichagePage(this)">
-		  <img src="home.png" alt="home"/>
-		<br/>
-		My Home
-	</button>
-	<button id = "mytasks" onclick="affichagePage(this)">
-		<img src="tasks.png" alt="tasks"/>
-		<br/>
-		My Tasks
-	</button>
-	<button id = "mypref" onclick="affichagePage(this)">
-		<img src="preferences.png" alt="Preferences"/>
-		<br/>
-		Preferences
-	</button>
+    <button name = "myhome" onclick="affichagePage(this)">
+		    <img src="home.png" alt="home"/>
+		  <br/>
+		  My Home
+	  </button>
+	  <button name = "mytasks" onclick="affichagePage(this)">
+		  <img src="tasks.png" alt="tasks"/>
+		  <br/>
+		  My Tasks
+	  </button>
+	  <button name = "mypref" onclick="affichagePage(this)">
+		  <img src="preferences.png" alt="Preferences"/>
+		  <br/>
+		  Preferences
+	  </button>
   </div>
 
 	<div id="myHome">
-	  	<div id ="choixEtage"> <p> kikoo </p> </div>
+	  	<div id ="choixEtage"> </div>
     	<div id ="paramGen">  </div>
 	    <div id ="infoGlobale">  </div>
 	</div>
   
 	<div id="myTasks">
-	  
+	  <select id="tachesCours">
+          <option selected hidden>Taches en cours</option>
+     </select>
+     <select id="tachesProg">
+          <option selected hidden>Taches programmées</option>
+     </select>
+     <select id="tachesFinies">
+          <option selected hidden>Taches finies</option>
+     </select>
 	</div>
 	
 	<div id="preferences">
