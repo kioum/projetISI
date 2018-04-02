@@ -28,8 +28,11 @@ var Piece = function (name, x, y, w, h) {
 	this.height = h; // hauteur de la piece
 	this.display = document.createElement("div");
 	this.display.id = name;
-	this.onclick = function(){
-	  
+	
+	//Programme on click
+	var piece = this;
+	this.display.onclick = function(){
+		affichagePiece(piece);
 	}
 	this.objets = []; // les objets connectees de la pieces
 	
@@ -50,7 +53,10 @@ Piece.prototype.affichage = function(e){
 	this.display.style.width = this.width + "px";
 	this.display.style.height = this.height + "px";
 
-	this.display.style.backgroundColor = "black";
+	if(this.light)
+		this.display.style.backgroundColor = "yellow";
+	else
+		this.display.style.backgroundColor = "black";
 	e.display.appendChild(this.display);
 }
 
@@ -66,30 +72,30 @@ var Action = function(){
 
 //Permet d'afficher la bonne page
 var affichagePage = function(doc){
-  var accueil = document.getElementById("pageAccueil");
-  accueil.style.display = "none";
-  var myhome = document.getElementById("myHome");
-  myhome.style.display = "none";
-  var mytasks = document.getElementById("myTasks");
-  mytasks.style.display = "none";
-  document.getElementById("retour").style.display = "block";
+	var accueil = document.getElementById("pageAccueil");
+	accueil.style.display = "none";
+	var myhome = document.getElementById("myHome");
+	myhome.style.display = "none";
+	var mytasks = document.getElementById("myTasks");
+	mytasks.style.display = "none";
+	document.getElementById("retour").style.display = "block";
   
-  if(doc.id == "retour") doc.name = pagePrecedent;
+	if(doc.id == "retour") doc.name = pagePrecedent;
   
-  //MY HOME
+	//MY HOME
 	if(doc.name == "myhome"){
-	  //affiche les bon elements
-	  myhome.style.display = "block";
-	  var enfant = myhome.getElementsByTagName("div");
-    for (var i = 0; i < enfant.length; i++) {
-      enfant[i].style.display = "block";
-    }
+		//affiche les bon elements
+		myhome.style.display = "block";
+		var enfant = myhome.getElementsByTagName("div");
+		for (var i = 0; i < enfant.length; i++) {
+			enfant[i].style.display = "block";
+		}
     
-    var choixEtage = document.getElementById("choixEtage");
-    while( choixEtage.firstChild) choixEtage.removeChild( choixEtage.firstChild);
+		var choixEtage = document.getElementById("choixEtage");
+		while( choixEtage.firstChild) choixEtage.removeChild( choixEtage.firstChild);
     
-    //ajoute les boutons dinamiquement a choixEtage
-	  var i = 0;
+		//ajoute les boutons dynamiquement a choixEtage
+		var i = 0;
 		home.etages.forEach(function(etage) {
 		  var tmp = document.createElement("button");
 		  tmp.name = "etage" + i;
@@ -128,9 +134,12 @@ var affichagePage = function(doc){
   
 }
 
-
+//creation automatique et affiche la div des pieces.
 var affichagePiece = function(doc){
-  
+  var new_div = document.createElement("div");
+  new_div.style.display.width = 100 + "px";
+  console.log(doc.name);
+  document.body.appendChild(new_div);
 }
 // Variable globale
 var pagePrecedent = "pageAccueil";
