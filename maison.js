@@ -136,10 +136,23 @@ var affichagePage = function(doc){
 
 //creation automatique et affiche la div des pieces.
 var affichagePiece = function(doc){
-  var new_div = document.createElement("div");
-  new_div.style.display.width = 100 + "px";
+	//div principal de l'affichage
+	var new_div = document.createElement("div");
+	new_div.id = "detail_piece";
+	new_div.style.width = 100 + "px";
+	new_div.style.height = 100 + "px";
+	new_div.style.background = "white";
+	new_div.style.position = "absolute";
+	//new_div.style.display.margin-top = "-41px";
+	//new_div.style.display.z-index = 2; 
+  
+  //Affichage du titre
+  var new_span = document.createElement("span");
+  new_span.innerHTML = doc.name;
+  
   console.log(doc.name);
-  document.body.appendChild(new_div);
+  new_div.appendChild(new_span);
+  document.getElementById("myHome").appendChild(new_div);
 }
 // Variable globale
 var pagePrecedent = "pageAccueil";
