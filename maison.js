@@ -137,23 +137,47 @@ var affichagePage = function(doc){
 //creation automatique et affiche la div des pieces.
 var affichagePiece = function(doc){
 	//div principal de l'affichage
-	var new_div = document.createElement("div");
-	new_div.id = "detail_piece";
-	new_div.style.width = 100 + "px";
-	new_div.style.height = 100 + "px";
-	new_div.style.background = "white";
-	new_div.style.position = "absolute";
-	//new_div.style.display.margin-top = "-41px";
-	//new_div.style.display.z-index = 2; 
+	var detail_div = document.createElement("div");
+	detail_div.id = "detail_piece";
+	detail_div.style.marginLeft = 10 + "%";
+	detail_div.style.width = 80 + "%";
+	detail_div.style.height = 80 + "%";
+	detail_div.style.background = "white";
+	detail_div.style.position = "absolute";
   
   //Affichage du titre
-  var new_span = document.createElement("span");
-  new_span.innerHTML = doc.name;
+  var titre_span = document.createElement("span");
+  titre_span.innerHTML = doc.name;
   
-  console.log(doc.name);
-  new_div.appendChild(new_span);
-  document.getElementById("myHome").appendChild(new_div);
+  //Div avec mini plan + action de la piece
+  var planaction_div = document.createElement("div");
+  planaction_div.id = "planAction_piece";
+  planaction_div.style.width = 100 + "%";
+	planaction_div.style.height = 20 + "%";
+	
+	// mini plan
+	var miniplan_div = document.createElement("div");
+  miniplan_div.id = "planAction_piece";
+  miniplan_div.style.float = "left";
+  miniplan_div.style.width = 40 + "%";
+	miniplan_div.style.height = 100 + "%";
+	miniplan_div.style.background = "red";
+	// les actions de chaque piece
+	var action_div = document.createElement("div");
+  action_div.id = "planAction_piece";
+  action_div.style.marginLeft = 40 + "%";
+  action_div.style.width = 60 + "%";
+	action_div.style.height = 100 + "%";
+	action_div.style.background = "blue";
+	
+	planaction_div.appendChild(miniplan_div);
+	planaction_div.appendChild(action_div);
+	
+  detail_div.appendChild(titre_span);
+  detail_div.appendChild(planaction_div);
+  document.getElementById("myHome").appendChild(detail_div);
 }
+
 // Variable globale
 var pagePrecedent = "pageAccueil";
 
