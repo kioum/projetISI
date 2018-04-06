@@ -62,7 +62,7 @@ Piece.prototype.affichage = function(e){
 	e.display.appendChild(this.display);
 }
 
-var Objet = function(name, image) {
+var Objet = function(piece, name, image) {
 	var objet = this;
 	this.name = name;
 	this.image = image;
@@ -79,7 +79,7 @@ var Objet = function(name, image) {
 	var span = document.createElement("span");
 	span.innerHTML = name;
 	this.display.onclick = function(){
-		affichageObjet(objet);
+		affichageObjet(piece, objet);
 	}
 	
 	this.display.appendChild(span);
@@ -95,8 +95,12 @@ var Action = function(name){
 	this.dateDebut; // debut de l'action
 }
 
+Action.prototype.progression = function(){
+	return 50;
+}
+
 //affichage des action d'un objet 
-var affichageObjet = function(objet){
+var affichageObjet = function(piece, objet){
 	var parent = document.getElementById("detail_piece");
 	if(parent) parent.removeChild(parent.lastChild);
 	
@@ -198,7 +202,7 @@ var affichageObjet = function(objet){
 			buttonDetail.style.width = 5 + "%";
 			buttonDetail.onclick = function(){
 				if(buttonDetail.innerHTML == "+"){
-					affichageAction(element, div_action);
+					affichageAction(piece, objet, element, div_action);
 					buttonDetail.innerHTML = "-";
 				}else if(buttonDetail.innerHTML == "-"){
 					div_action.removeChild(div_action.lastChild);
@@ -229,7 +233,7 @@ var affichageObjet = function(objet){
 	parent.appendChild(detail_action);
 }
 
-var affichageAction = function(action, display){
+var affichageAction = function(p, o, action, display){
 	action.dateDebut = new Date();
 	var div_action = document.createElement("div");
 	div_action.style.marginLeft = 10 + "%";
@@ -302,6 +306,9 @@ var affichageAction = function(action, display){
 	var p_valider = document.createElement("p");
 	var button_valider = document.createElement("button");
 	button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
+	button_valider.onclick = function(){
+		lancementAction(p, o, action, action.dateDebut);
+	}
 	
 	p_valider.appendChild(button_valider);
 	
@@ -310,6 +317,30 @@ var affichageAction = function(action, display){
 	div_action.appendChild(p_tempsExecution);
 	div_action.appendChild(p_valider);
 	display.appendChild(div_action);
+}
+
+function listObjet(doc) {
+		// Liste des objets
+	var objetlist_div = document.createElement("div");
+	objetlist_div.id = "listObjet_piece";
+	objetlist_div.style.width = 100 + "%";
+	objetlist_div.style.height = 100 + "%";
+	objetlist_div.style.background = "green";
+	
+	doc.objets.forEach(function(element) {
+		objetlist_div.appendChild(element.display);
+	});
+	return objetlist_div;
+}
+
+function lancementAction(p, o, a,d){
+	var parent = document.getElementById("detail_objet");
+	if(parent) parent.removeChild(parent.lastChild);
+	document.getElementById("detail_piece").appendChild(listObjet(p));
+	
+	var new_action = new Action(a.name);
+	
+	o.actionActuel = new_action;
 }
 //Fonction servant à limiter le nombre de caractere  dans une textarea
 function maxLength(element, max){
@@ -529,21 +560,9 @@ var affichagePiece = function(doc){
 	planaction_div.appendChild(miniplan_div);
 	planaction_div.appendChild(action_div);
 	
-	
-	// Liste des objets
-	var objetlist_div = document.createElement("div");
-	objetlist_div.id = "listObjet_piece";
-	objetlist_div.style.width = 100 + "%";
-	objetlist_div.style.height = 100 + "%";
-	objetlist_div.style.background = "green";
-	
-	doc.objets.forEach(function(element) {
-		objetlist_div.appendChild(element.display);
-	});
-	
   detail_div.appendChild(titre_span);
   detail_div.appendChild(planaction_div);
-  detail_div.appendChild(objetlist_div);
+  detail_div.appendChild(listObjet(doc));
   document.getElementById("myHome").appendChild(detail_div);
 }
 
@@ -563,8 +582,8 @@ var wc = new Piece("wc", 110,110,100,100);
 var cuisine = new Piece("cuisine", 0,110,100,100);
 var salleDeBains = new Piece("salle de bain", 50, 105, 100, 75);
 
-var four = new Objet("Four", "four.png");
-var reveil = new Objet("Reveil", "reveil.png");
+var four = new Objet(cuisine, "Four", "four.png");
+var reveil = new Objet(chambre, "Reveil", "reveil.png");
 
 var cuisson = new Action("Cuisson");
 var alarme = new Action("Alarme");
