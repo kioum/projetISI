@@ -79,23 +79,24 @@ var Objet = function(name, image) {
 	var span = document.createElement("span");
 	span.innerHTML = name;
 	this.display.onclick = function(){
-		affichageAction(objet);
+		affichageObjet(objet);
 	}
 	
 	this.display.appendChild(span);
 	this.onOff = false; // Si l'objet est on ou off
 	this.occuper = false; // Si l'objet est occupé
 	this.actions = []; //action possible avec l'objet
+	this.actionActuel;
 }
 
 var Action = function(name){
 	this.name = name;
 	this.time = 0; // temps de l'action
-	this.dateDebut = new Date(); // debut de l'action
+	this.dateDebut; // debut de l'action
 }
 
 //affichage des action d'un objet 
-var affichageAction = function(objet){
+var affichageObjet = function(objet){
 	var parent = document.getElementById("detail_piece");
 	if(parent) parent.removeChild(parent.lastChild);
 	
@@ -181,8 +182,37 @@ var affichageAction = function(objet){
 	
 	
 	//Affichage des actions
-	
-	
+	if(!objet.occuper){
+		var listAction = document.createElement("div");
+		objet.actions.forEach(function(element) {
+			var div_action = document.createElement("div");
+			div_action.style.border = "1px solid black";
+		
+			var span_action = document.createElement("span");
+			span_action.innerHTML = element.name + " :" ;
+			span_action.style.float = "left";
+		
+			var buttonDetail = document.createElement("button");
+			buttonDetail.innerHTML = "+";
+			buttonDetail.style.marginLeft = 95 + "%";
+			buttonDetail.style.width = 5 + "%";
+			buttonDetail.onclick = function(){
+				if(buttonDetail.innerHTML == "+"){
+					affichageAction(element, div_action);
+					buttonDetail.innerHTML = "-";
+				}else if(buttonDetail.innerHTML == "-"){
+					div_action.removeChild(div_action.lastChild);
+					buttonDetail.innerHTML = "+";
+				}
+		}
+			//span_action.style.float = "right";
+		
+			div_action.appendChild(span_action);
+			div_action.appendChild(buttonDetail);
+			listAction.appendChild(div_action);
+			console.log(element);
+		});
+	}
 	statut_p.appendChild(statutlabel_p);
 	carac_div.appendChild(statut_p);
 	
@@ -191,12 +221,113 @@ var affichageAction = function(objet){
 	
 	detail_action.appendChild(titre_span);
 	detail_action.appendChild(caracImage_div);
+	if(!objet.occuper)
+		detail_action.appendChild(listAction);
 	//detail_action.appendChild(planaction_div);
 	//detail_action.appendChild(objetlist_div);
 	
 	parent.appendChild(detail_action);
 }
+
+var affichageAction = function(action, display){
+	action.dateDebut = new Date();
+	var div_action = document.createElement("div");
+	div_action.style.marginLeft = 10 + "%";
 	
+	var p_dateDebut = document.createElement("p");
+	var date_dateDebut = document.createElement("input");
+	date_dateDebut.type = "date";
+	date_dateDebut.value = action.dateDebut.getFullYear()+"-0"+ 
+	(action.dateDebut.getMonth()+1) + "-0" + action.dateDebut.getDate();
+	var span_dateDebut = document.createElement("span");
+	span_dateDebut.innerHTML = "Date de debut : ";
+	p_dateDebut.appendChild(span_dateDebut);
+	p_dateDebut.appendChild(date_dateDebut);
+	
+	var p_hDebut = document.createElement("p");
+	var span_hDebut = document.createElement("span");
+	span_hDebut.innerHTML = "Heure de debut : ";
+	var heure_hDebut = document.createElement("input");
+	heure_hDebut.value = action.dateDebut.getHours();
+	heure_hDebut.id = "heure";
+	heure_hDebut.style.width = 5 + "%";
+	heure_hDebut.onchange = function(){
+		maxLength(heure_hDebut, 2);
+	}
+	var labelheure_hDebut = document.createElement("label");
+	labelheure_hDebut.innerHTML = " h ";
+	var labelminute_hDebut = document.createElement("label");
+	labelminute_hDebut.innerHTML = " min";
+	var minute_hDebut = document.createElement("input");
+	minute_hDebut.value = action.dateDebut.getMinutes();
+	minute_hDebut.id = "minute";
+	minute_hDebut.style.width = 5 + "%";
+	minute_hDebut.onchange = function(){
+		maxLength(minute_hDebut, 2);
+	}
+	p_hDebut.appendChild(span_hDebut);
+	p_hDebut.appendChild(heure_hDebut);
+	p_hDebut.appendChild(labelheure_hDebut);
+	p_hDebut.appendChild(minute_hDebut);
+	p_hDebut.appendChild(labelminute_hDebut);
+	
+	var p_tempsExecution = document.createElement("p");
+	var span_tempsExecution = document.createElement("span");
+	span_tempsExecution.innerHTML = "Temps d'execution: ";
+	var heure_tempsExecution = document.createElement("input");
+	heure_tempsExecution.id = "heure";
+	heure_tempsExecution.value = 0;
+	heure_tempsExecution.style.width = 5 + "%";
+	heure_tempsExecution.onchange = function(){
+		maxLength(heure_tempsExecution, 2);
+	}
+	var minute_tempsExecution = document.createElement("input");
+	minute_tempsExecution.style.width = 5 + "%";
+	minute_tempsExecution.id = "minute";
+	minute_tempsExecution.value = 0;
+	minute_tempsExecution.onchange = function(){
+		maxLength(minute_tempsExecution, 2);
+	}
+	var labelheure_tempsExecution = document.createElement("label");
+	labelheure_tempsExecution.innerHTML = " h ";
+	var labelminute_tempsExecution = document.createElement("label");
+	labelminute_tempsExecution.innerHTML = " min ";
+	
+	p_tempsExecution.appendChild(span_tempsExecution);
+	p_tempsExecution.appendChild(heure_tempsExecution);
+	p_tempsExecution.appendChild(labelheure_tempsExecution);
+	p_tempsExecution.appendChild(minute_tempsExecution);
+	p_tempsExecution.appendChild(labelminute_tempsExecution);
+	
+	var p_valider = document.createElement("p");
+	var button_valider = document.createElement("button");
+	button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
+	
+	p_valider.appendChild(button_valider);
+	
+	div_action.appendChild(p_dateDebut);
+	div_action.appendChild(p_hDebut);
+	div_action.appendChild(p_tempsExecution);
+	div_action.appendChild(p_valider);
+	display.appendChild(div_action);
+}
+//Fonction servant à limiter le nombre de caractere  dans une textarea
+function maxLength(element, max){
+    value = parseInt(element.value);
+	console.log(element.id);
+	if(element.id == "heure"){
+		if(value > 24) element.value = 24;
+		if(value < 0) element.value = 0;
+	}
+	if(element.id == "minute")
+		if(value > 60) element.value = 60;
+		if(value < 0) element.value = 0;
+    max = parseInt(max);
+    if(value.length > max){
+        element.value = value.substr(0, max);
+    }
+}
+
 //Permet d'afficher la bonne page
 var affichagePage = function(doc){
 	var accueil = document.getElementById("pageAccueil");
