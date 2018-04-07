@@ -1,52 +1,78 @@
 <html>
-  <head>
-    <title>My Smart Home</title>
-	<script type="text/javascript" src="maison.js" ></script>
-    <link href="style.css" rel="stylesheet" />
-  </head>
-  <body>
-  <div id ="titre"> <span> <p>SMART</p></span>
-		  <img id ="retour" src="retour.png" alt="Preferences" onclick="affichagePage(this)"/>
+<head>
+<title>My Smart Home</title>
+<script type="text/javascript" src="maison.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="container-fluid" id="titre">
+		<span> <img id="logo" src="Icone/MySmart Homr.png" alt="Preferences" />
+		</span>
+		<button name="retour" id="retour" class="btn btn-secondary"
+			onclick="affichagePage(this)">
+			<img src="Icone/retour-icone.png" alt="Preferences" /> <br />
+		</button>
 	</div>
-  
-  <div id="pageAccueil">
-    <button name = "myhome" onclick="affichagePage(this)">
-		    <img src="home.png" alt="home"/>
-		  <br/>
-		  My Home
-	  </button>
-	  <button name = "mytasks" onclick="affichagePage(this)">
-		  <img src="tasks.png" alt="tasks"/>
-		  <br/>
-		  My Tasks
-	  </button>
-	  <button name = "mypref" onclick="affichagePage(this)">
-		  <img src="preferences.png" alt="Preferences"/>
-		  <br/>
-		  Preferences
-	  </button>
-  </div>
+
+	<div class="container-fluid" id="pageAccueil">
+		<div class="text-center">
+			<button name="myhome" class="btn btn-primary"
+				onclick="affichagePage(this)">
+				<img src="Icone/home.png" alt="home" /> <br /> My Home
+			</button>
+		</div>
+		<div class="text-center">
+			<button name="mytasks" class="btn btn-light"
+				onclick="affichagePage(this)">
+				<img src="Icone/tasks.png" alt="tasks" /> <br /> My Tasks
+			</button>
+		</div>
+		<div class="text-center">
+			<button name="mypref" class="btn btn-secondary"
+				onclick="affichagePage(this)">
+				<img src="Icone/preferences.png" alt="Preferences" /> <br /> Preferences
+			</button>
+		</div>
+	</div>
 
 	<div id="myHome">
-	  	<div id ="choixEtage"> </div>
-    	<div id ="paramGen">  </div>
-	    <div id ="infoGlobale">  </div>
+		<div id="choixEtage" class="text-center"></div>
+
+		<div id="paramGen">
+			<button name="General" class="btn btn-primary" id="bParam"
+				onclick="affichagePage(this)" data-toggle="tooltip"
+				data-placement="auto top" title="ParamËtres GÈnÈraux" >
+				<img src="Icone/try3.png" alt="Preferences" /> <br />
+			</button>
+			<!--  <img src="try.png" alt="Preferences" /> <br /> -->
+		</div>
+
+		<div id="infoGlobale"></div>
 	</div>
-  
+
 	<div id="myTasks">
-	  <select id="tachesCours">
-          <option selected hidden>Taches en cours</option>
-     </select>
-     <select id="tachesProg">
-          <option selected hidden>Taches programm√©es</option>
-     </select>
-     <select id="tachesFinies">
-          <option selected hidden>Taches finies</option>
-     </select>
+		<select id="tachesCours">
+			<option selected hidden>Taches en cours</option>
+		</select> <select id="tachesProg">
+			<option selected hidden>Taches programm√©es</option>
+		</select> <select id="tachesFinies">
+			<option selected hidden>Taches finies</option>
+		</select>
 	</div>
-	
-	<div id="preferences">
-	  
-	</div>
-  </body>
+
+	<div id="preferences"></div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+
+</body>
 </html>
