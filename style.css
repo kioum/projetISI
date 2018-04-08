@@ -8,7 +8,7 @@ body {
 	/*page entière centrée*/
 	min-height: 100%;
 	width: 750px;
-	padding: 0 ;
+	padding: 0;
 	margin: 0 auto;
 	position: relative;
 	background: url(Background/3.jpg) no-repeat;
@@ -18,45 +18,6 @@ body {
 div#center {
 	/* Pour éviter la superposition du pied de page et du contenu : */
 	padding-bottom: 50px;
-}
-
-div#etages {
-	/*sur centré*/
-	position: absolute;
-	text-align: center; width : 300px;
-	height: 300px;
-	margin-top: 100px;
-	margin-bottom: 270px;
-	margin-right: 270px;
-	margin-left: 270px;
-	background-color: navy;
-	width: 300px;
-}
-
-div#choixEtage {
-	/*sur la gauche*/
-	float: left;
-	margin-top: 0;
-	width: 100px;
-	height: 85%;
-	background-color: 759fbc;
-	box-shadow: 1px 1px 5px grey;
-}
-
-#boutonsEtages {
-	width: 90px;
-	margin-top: 15px;
-	background-image: -webkit-linear-gradient(top, white, gray);
-	box-shadow: 2px 2px 5px black;
-}
-
-#pieces {
-
-	background-color: red;
-}
-
-#boutonsEtages:focus {
-	background: darkgrey;
 }
 
 div#titre {
@@ -79,20 +40,43 @@ div#titre {
 	background-color: 1f5673;
 }
 
-/*logo smart home*/
-#logo {	
+/*background etage maison*/
+div#etages {
+	/*sur centré*/
+	position: absolute;
+	text-align: center;
+	width: 300px;
+	height: 300px;
+	margin-top: 100px;
+	margin-bottom: 270px;
+	margin-right: 270px;
+	margin-left: 270px;
+	background-color: navy;
+	width: 300px;
 }
 
-/*Texte du titre*/
-span {
-	margin: 0;
-	display: inline-block;
-	line-height: 1.3em;
-	vertical-align: middle;
+/*panneau lat�ral gauche*/
+div#choixEtage {
+	/*sur la gauche*/
+	float: left;
+	margin-top: 0;
+	width: 100px;
+	height: 85%;
+	background-color: 759fbc;
+	box-shadow: 1px 1px 5px grey;
+}
+#boutonsEtages {
+	width: 90px;
+	margin-top: 15px;
+	background-image: -webkit-linear-gradient(top, white, gray);
+	box-shadow: 2px 2px 5px black;
+}
+#boutonsEtages:focus {
+	background: darkgrey;
 }
 
+/*au pied de page*/
 div#infoGlobale {
-	/*au pied de page*/
 	position: absolute;
 	width: 650px;
 	height: 100px;
@@ -100,7 +84,6 @@ div#infoGlobale {
 	left: 100px;
 	float: right;
 	background-color: 759fbc;
-	
 }
 
 div#paramGen {
@@ -112,15 +95,12 @@ div#paramGen {
 	float: left;
 	background-color: 1f5673;
 	border-radius: 5px 10px 0 5px;
-	z-index: 10;	
-	
-	box-shadow : 0px 0px 2px 0b2027, 0 0 25px 1898ce, 0 0 5px 1f5673;
+	z-index: 10;
+	box-shadow: 0px 0px 2px 0b2027, 0 0 25px 1898ce, 0 0 5px 1f5673;
 	/*box-shadow: 0 0 20px 20px white;*/
 }
 
-
-
-/*bouton param G*/
+/*bouton param Gx*/
 #bParam {
 	text-align: left;
 	height: 100px;
@@ -131,15 +111,113 @@ div#paramGen {
 	background-color: 1f5673;
 }
 #bParam.text {
-position:relative;
-bottom:30px;
-left:0px;
-visibility:hidden;
+	position: relative;
+	bottom: 30px;
+	left: 0px;
+	visibility: hidden;
+}
+#bParam:hover.text {
+	visibility: visible;
 }
 
-#bParam:hover.text {
-visibility:visible;
-}
+	/*Fenetre action objet*/
+	#detail_objet {
+		text-align: left;
+		position: relative;
+		z-index: 1000;
+		height: 57%;
+		width: 100%;
+		float: left;
+		background-color:1f5673;
+	}
+	
+	#nom_piece {
+		text-align: center;
+		position: relative;
+		z-index: 1000;
+		height: 10%;
+		width: 100%;
+		text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+	            	 0px 8px 13px rgba(0,0,0,0.1),
+	             	0px 18px 23px rgba(0,0,0,0.1);
+		float: left;
+		text-decoration: underline;
+		font: italic bold 12px/30px Georgia, serif;
+		font-size: 150%;
+		color : white;
+		line-height: 1.3em;
+		vertical-align: middle;
+	}
+	
+	#listObjet_piece {
+		text-align: left;
+		position: relative;
+		z-index: 1000;
+		height: 50%;
+		width: 100%;
+		float: left;
+		background-color: 1f5673;
+	}
+	#listObjet_piece.p {
+    float: right;
+    margin: 0 10px 0 0;
+	}
+	
+	#detail_piece {
+		position: absolute;
+		z-index: 1000;
+		height: 74%;
+		width: 650px;
+		margin-left: 100px;
+		border: 2px solid white; padding : 10px; border-radius : 25px;
+		background-color: 1898ce;
+		padding: 10px;
+		border-radius: 25px;
+	}
+	
+	
+	#miniplan_piece {
+		position: relative;
+		text-align: justify;
+		border: 2px solid white;
+		padding: 10px;
+		border-radius: 25px;
+		z-index: 1000;
+		height: 150px;
+		width: 40%;
+		float: left;
+		background-color: BBBBBB;
+	}
+	
+	#action_piece {
+		position: relative;
+		z-index: 1000;
+		height: 150px;
+		width: 60%;
+		float: right;
+		background-color: FFFFFF;
+	}
+	
+	/*bouton fermer*/
+	#close {
+		position: relative;
+		z-index: 1000;
+		height: 25px;
+		width: 10px;
+		float: right;
+	}
+
+	
+	/*fenetre objet*/
+	#fenetreObj {
+		position: relative;
+		z-index: 1000;
+		height: 50%;
+		width: 50%;
+		background-color: 1f5673;
+	}
+
+
 
 /*Couleur boutons*/
 .btn-primary, .btn-primary:active, .btn-primary:visited, .btn-primary:focus
@@ -147,6 +225,7 @@ visibility:visible;
 	background-color: #1f5673;
 	border-color: #1f5673;
 }
+
 .btn-primary:hover {
 	background-color: #133547;
 	border-color: 759fbc;
@@ -156,6 +235,7 @@ visibility:visible;
 	background-color: #759fbc;
 	border-color: #759fbc;
 }
+
 .btn-light:hover {
 	background-color: #557389;
 	border-color: e1e8e2;
