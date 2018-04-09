@@ -90,8 +90,9 @@ var Objet = function(piece, name, image) {
 	this.actions = []; //action possible avec l'objet
 }
 
-var Action = function(name, param, param_unit){
+var Action = function(piece, name, param, param_unit){
 	this.name = name;
+	this.piece = piece.name;
 	this.time = 0; // temps de l'action
 	this.dateDebut; // debut de l'action
 	this.etat = 0; // 0 = Pas lancé, 1 = en cours, 2 bien fini, -1 annulé
@@ -254,7 +255,7 @@ var affichageObjet = function(piece, objet){
 	parent.appendChild(detail_action);
 }
 
-var affichageAction = function(p,action){
+var affichageAction = function(p, action){
 	if(!action.dateDebut)
 		action.dateDebut = new Date();
 	var div_action = document.createElement("div");
@@ -421,7 +422,7 @@ function lancementAction(p,a,d, t){
 	}
 	
 	if (confirm("Etes-vous sur de vouloir créer une nouvelle action " + a.name + " ?")) {
-		let new_action = new Action(a.name);
+		let new_action = new Action(p, a.name);
 		new_action.dateDebut = d;
 		new_action.time = t;
 		home.actions.push(new_action);
@@ -554,8 +555,8 @@ var generateListTasks = function(){
 			
 			//Affichage du titre
 			var name_span = document.createElement("span");
-			name_span.innerHTML = a.name + " : ";
-			name_span.style.width = 10 + "%";
+			name_span.innerHTML = a.name + " (" + a.piece + ")" + " : ";
+			name_span.style.width = 25 + "%";
 			name_span.style.float = "left";
 			name_span.id = id+"_name";
 				
@@ -579,6 +580,7 @@ var generateListTasks = function(){
 			button_annuler.style.width = 47 + "%";
 			button_annuler.style.marginLeft = 50 + "%";
 			button_annuler.innerHTML = "Annuler";
+			
 			if(a.etat == 0){ //action prog	
 				button_modifier.onclick = function(){
 					let new_div = document.createElement("div");
@@ -700,9 +702,9 @@ var calculeProgress = function(db, df){
 var new_progess = function(name){
 	var myProgress = document.createElement("div");
 	myProgress.id = name + "_myProgress";
-	myProgress.style.width = 50 + "%";
+	myProgress.style.width = 35 + "%";
 	myProgress.style.color = "grey";
-	myProgress.style.marginLeft = 10 + "%";
+	myProgress.style.marginLeft = 25 + "%";
 	myProgress.style.border = "1px solid black";
 	var myBar = document.createElement("div");
 	myBar.id = name + "_myBar";
@@ -927,8 +929,8 @@ var four = new Objet(cuisine, "Four", "four.png");
 var reveil = new Objet(chambre, "Reveil", "reveil.png");
 var frigo = new Objet(cuisine, "Frigo", "Icone/fridge.png");
 
-var cuisson = new Action("Cuisson", "degree", "°C");
-var alarme = new Action("Alarme");
+var cuisson = new Action(cuisine, "Cuisson", "degree", "°C");
+var alarme = new Action(chambre, "Alarme");
 
 var datetest = new Date();
 datetest.setMinutes(datetest.getMinutes());
