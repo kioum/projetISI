@@ -54,7 +54,7 @@ div#etages {
 	background-color: 1f5673;
 }
 
-/*panneau latéral gauche*/
+/*panneau lat?ral gauche*/
 div#choixEtage {
 	/*sur la gauche*/
 	float: left;
@@ -124,7 +124,7 @@ div#paramGen {
 		text-align: left;
 		position: relative;
 		z-index: 1000;
-		height: 57%;
+		height: 70%;
 		width: 100%;
 		float: left;
 		background-color:1f5673;
@@ -265,7 +265,7 @@ div#paramGen {
 		/*position: relative;
 		z-index: 1000;	
 		width: 50%;*/
-		height: 39px;
+		height: 50px;
 		background-color: ACCCCC;
 	}
 	#slider {
@@ -287,6 +287,11 @@ div#paramGen {
 		color : white;
 		line-height: 1.3em;
 		vertical-align: middle;
+	}
+	
+	#detail_act {
+	  border: 2px solid white; padding : 10px; border-radius : 25px;
+		background-color: AAAAAA;
 	}
 
 
