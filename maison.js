@@ -201,7 +201,7 @@ var affichageObjet = function(piece, objet){
 			//Permet d'avoir plus de detail sur l'action
 			div_action.onclick = function(){
 				if(buttonDetail.innerHTML == "+"){
-					affichageAction(piece, element, div_action);
+					div_action.appendChild(affichageAction(piece, element));
 					buttonDetail.innerHTML = "-";
 				}else if(buttonDetail.innerHTML == "-"){
 					div_action.removeChild(div_action.lastChild);
@@ -232,8 +232,9 @@ var affichageObjet = function(piece, objet){
 	parent.appendChild(detail_action);
 }
 
-var affichageAction = function(p,action, display){
-	action.dateDebut = new Date();
+var affichageAction = function(p,action){
+	if(!action.dateDebut)
+		action.dateDebut = new Date();
 	var div_action = document.createElement("div");
 	div_action.style.marginLeft = 10 + "%";
 	div_action.onclick = function(event){event.stopPropagation();}
@@ -291,9 +292,13 @@ var affichageAction = function(p,action, display){
 	}
 	var minute_tempsExecution = document.createElement("input");
 	minute_tempsExecution.style.width = 5 + "%";
-	minute_tempsExecution.value = 1;
+	if(p)
+		minute_tempsExecution.value = 1;
+	else
+		minute_tempsExecution.value = action.time;
+		
 	minute_tempsExecution.onchange = function(){
-		maxLength(minute_tempsExecution, 2);
+		maxLength(minute_tempsExecution, 3);
 	}
 	var labelheure_tempsExecution = document.createElement("label");
 	labelheure_tempsExecution.innerHTML = " h ";
@@ -308,23 +313,43 @@ var affichageAction = function(p,action, display){
 	
 	var p_valider = document.createElement("p");
 	var button_valider = document.createElement("button");
-	button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
-	button_valider.onclick = function(){
-		let date = new Date(date_dateDebut.value);
-		date.setHours(heure_hDebut.value);
-		date.setMinutes(minute_hDebut.value);
-		
-		let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
-		lancementAction(p, action, date, temps);
+	if(p){
+		button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
+		button_valider.onclick = function(){
+			let date = new Date(date_dateDebut.value);
+			date.setHours(heure_hDebut.value);
+			date.setMinutes(minute_hDebut.value);
+
+			let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
+			lancementAction(p, action, date, temps);
+		}
+	}else {
+		button_valider.innerHTML = "Modifier l'action : '" + action.name + "'";
+		button_valider.onclick = function(){
+			if(confirm("Etes-vous sur de vouloir modifier cette tache : " + action.name)){
+				document.getElementById("tachesProg").removeChild(
+					document.getElementById(action.name+action.dateDebut+action.time));
+				let date = new Date(date_dateDebut.value);
+				date.setHours(heure_hDebut.value);
+				date.setMinutes(minute_hDebut.value);
+
+				let tmp = home.actions[home.actions.indexOf(action)];
+				tmp.dateDebut = date;
+
+				let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
+				tmp.time = temps;
+			}
+			if(document.getElementById("current_modif"))
+				document.getElementById("myTasks").removeChild(document.getElementById("current_modif"));
+		}
 	}
-	
 	p_valider.appendChild(button_valider);
 	
 	div_action.appendChild(p_dateDebut);
 	div_action.appendChild(p_hDebut);
 	div_action.appendChild(p_tempsExecution);
 	div_action.appendChild(p_valider);
-	display.appendChild(div_action);
+	return div_action;
 }
 
 //Affichages de la liste des objets
@@ -503,9 +528,22 @@ var generateListTasks = function(){
 			button_annuler.style.width = 47 + "%";
 			button_annuler.style.marginLeft = 50 + "%";
 			button_annuler.innerHTML = "Annuler";
-			if(a.etat == 0){ //action en cours	
+			if(a.etat == 0){ //action prog	
 				button_modifier.onclick = function(){
+					let new_div = document.createElement("div");
+					new_div.style.opacity = "60%";
+					new_div.style.background = "white";
+					new_div.id = "current_modif";
 					
+					let span_action = document.createElement("span");
+					span_action.innerHTML = a.name + " :" ;
+					
+					new_div.appendChild(span_action);
+					new_div.appendChild(affichageAction(null, a));
+				
+					if(document.getElementById("current_modif"))
+						document.getElementById("myTasks").removeChild(document.getElementById("current_modif"));
+					document.getElementById("myTasks").appendChild(new_div);
 				}		
 				
 				button_annuler.innerHTML = "Supprimer";
@@ -525,9 +563,7 @@ var generateListTasks = function(){
 				new_action_cours.appendChild(dateFin_span);
 				actionProg.appendChild(new_action_cours);
 			}else if(a.etat == 1){ //action en cours
-				button_modifier.onclick = function(){
-					
-				}		
+				button_modifier.disabled = true;
 				
 				button_annuler.onclick = function(){
 					if(confirm("Etes-vous sur de vouloir annuler cette tache : " + a.name)){
