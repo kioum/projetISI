@@ -15,8 +15,9 @@ var Etage = function (name) {
 Etage.prototype.affichage = function(){
 	var etage = this;
 	if(document.getElementById("detail_piece"))
-		document.getElementById("myHome").removeChild(document.getElementById("myHome").lastChild);
-	document.getElementById("myHome").removeChild(document.getElementById("myHome").lastChild);
+		document.getElementById("myHome").removeChild(document.getElementById("detail_piece"));
+	if(document.getElementById("etages"))
+  	document.getElementById("myHome").removeChild(document.getElementById("etages"));
 	document.getElementById("myHome").appendChild(this.display);
 	this.pieces.forEach(function(element) {
 		element.affichage(etage);
@@ -89,11 +90,17 @@ var Objet = function(piece, name, image) {
 	this.actions = []; //action possible avec l'objet
 }
 
-var Action = function(name){
+var Action = function(name, param, param_unit){
 	this.name = name;
 	this.time = 0; // temps de l'action
 	this.dateDebut; // debut de l'action
 	this.etat = 0; // 0 = Pas lancé, 1 = en cours, 2 bien fini, -1 annulé
+	if(param){
+	  this.param1_name = param;
+	  this.param1;
+	  this.param1_unit = param_unit;
+	}
+	  
 }
 
 //affichage des action d'un objet 
@@ -232,6 +239,42 @@ var affichageObjet = function(piece, objet){
 	parent.appendChild(detail_action);
 }
 
+//Change tous les volets de la maison
+var changeAllVolet = function(b){
+  home.etages.forEach(function(etage){
+    etage.pieces.forEach(function(piece){
+      piece.volet = b;
+    })
+  });
+  if(b)
+    alert("Tous les volets de la maison sont maintenant ouvert");
+  else
+    alert("Tous les volets de la maison sont maintenant fermé");
+}
+
+//chnage toutes les lumieres de la maison
+var changeAllLight = function(b){
+  home.etages.forEach(function(etage){
+    etage.pieces.forEach(function(piece){
+      piece.light = b;
+    })
+  });
+  if(b)
+    alert("Toutes les lumieres de la maison sont maintenant allumé");
+  else
+    alert("Toutes les lumieres de la maison sont maintenant éteintes");
+}
+
+//change la temperature de la maison
+var changeAllTemp = function(temp){
+    home.etages.forEach(function(etage){
+    etage.pieces.forEach(function(piece){
+      piece.temp = temp;
+    })
+  });
+  document.getElementById("temp_maison").innerHTML = temp + "°c";
+}
+
 var affichageAction = function(p,action){
 	if(!action.dateDebut)
 		action.dateDebut = new Date();
@@ -311,6 +354,23 @@ var affichageAction = function(p,action){
 	p_tempsExecution.appendChild(minute_tempsExecution);
 	p_tempsExecution.appendChild(labelminute_tempsExecution);
 	
+	if(action.param1_name){
+	   //Date de depart
+	  var p_param1 = document.createElement("p");
+	  var input_param1 = document.createElement("input");
+	  //date_dateDebut.type = "date";
+	  input_param1.value = 0;
+	  var span_param1 = document.createElement("span");
+	  span_param1.innerHTML = action.param1_name + " : ";
+	  var span_param1_unit = document.createElement("span");
+	  span_param1_unit.innerHTML = action.param1_unit;
+	  
+	  p_param1.appendChild(span_param1);
+	  p_param1.appendChild(input_param1);
+	  p_param1.appendChild(span_param1_unit);
+	}
+ 
+	
 	var p_valider = document.createElement("p");
 	var button_valider = document.createElement("button");
 	if(p){
@@ -319,6 +379,9 @@ var affichageAction = function(p,action){
 			let date = new Date(date_dateDebut.value);
 			date.setHours(heure_hDebut.value);
 			date.setMinutes(minute_hDebut.value);
+			
+			if(action.param1_name)
+			  action.param1 = input_param1.value;
 
 			let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
 			lancementAction(p, action, date, temps);
@@ -347,6 +410,8 @@ var affichageAction = function(p,action){
 	
 	div_action.appendChild(p_dateDebut);
 	div_action.appendChild(p_hDebut);
+	if(p_param1)
+	  div_action.appendChild(p_param1);
 	div_action.appendChild(p_tempsExecution);
 	div_action.appendChild(p_valider);
 	return div_action;
@@ -825,7 +890,7 @@ var salleDeBains = new Piece("salle de bain", 50, 105, 100, 75);
 var four = new Objet(cuisine, "Four", "four.png");
 var reveil = new Objet(chambre, "Reveil", "reveil.png");
 
-var cuisson = new Action("Cuisson");
+var cuisson = new Action("Cuisson", "degree", "°C");
 var alarme = new Action("Alarme");
 
 var datetest = new Date();

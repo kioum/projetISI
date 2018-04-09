@@ -106,7 +106,12 @@
 	<div id="myHome">
 	  	<div id ="choixEtage"> </div>
     	<div id ="paramGen">  </div>
-	    <div id ="infoGlobale">  </div>
+	    <div id ="infoGlobale">  
+	      <span>Parametres de la maison :</span>
+	      <div id = "paramMaison"><span> Tous les volets</span><button onclick="changeAllVolet(true)">Ouvrir</button><button onclick="changeAllVolet(false)">Fermer</button></div>
+	      <div id = "paramMaison"><span> Toutes les lumieres</span><button onclick="changeAllLight(true)">Allumer</button><button onclick="changeAllLight(false)">Eteindre</button></div>
+	      <div id = "paramMaison"><span>Changer température : </span><input type="range" value=23 min=0 max=40 onchange="changeAllTemp(this.value)"></div> <span id="temp_maison">23°c</span>
+	    </div>
 	</div>
   
 	<div id="myTasks">
