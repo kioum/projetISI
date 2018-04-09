@@ -14,7 +14,7 @@ var Etage = function (name) {
 //for each pour affichage d'un etage( ensemble de piece)
 Etage.prototype.affichage = function(){
 	var etage = this;
-	if(document.getElementById("detail_piece"))
+  if(document.getElementById("detail_piece"))
 		document.getElementById("myHome").removeChild(document.getElementById("detail_piece"));
 	if(document.getElementById("etages"))
   	document.getElementById("myHome").removeChild(document.getElementById("etages"));
@@ -32,15 +32,15 @@ var Piece = function (name, x, y, w, h) {
 	this.height = h; // hauteur de la piece
 	this.display = document.createElement("div");
 	this.display.id = name;
-	
+
 	//Programme on click
 	var piece = this;
 	this.display.onclick = function(){
 		affichagePiece(piece);
 	}
 	this.objets = []; // les objets connectees de la pieces
-	
-	
+
+
 	this.light = false; // si les lumieres sont allumees
 	this.temp = 23; // temperature de la piece
 	this.volet = false; // si les volets sont ouvert ou fermer
@@ -50,7 +50,7 @@ Piece.prototype.affichage = function(e){
 	//recupere la valeur du display parent
 	var x = e.display.offsetLeft;
 	var y = e.display.offsetTop;
-  
+
 	this.display.style.position = "absolute";
 	this.display.style.left = (x + this.x) + "px";
 	this.display.style.top = (y + this.y) + "px";
@@ -100,58 +100,78 @@ var Action = function(name, param, param_unit){
 	  this.param1;
 	  this.param1_unit = param_unit;
 	}
-	  
 }
 
 //affichage des action d'un objet 
 var affichageObjet = function(piece, objet){
 	var parent = document.getElementById("detail_piece");
 	if(parent) parent.removeChild(parent.lastChild);
-	
-	// detail de l'objet
+
+	// detail de l'objet, div générale
 	var detail_action = document.createElement("div");
+	detail_action.id = "detail_objet";
 	detail_action.style.border = "3px solid black";
-	detail_action.style.id = "detail_objet";
-	detail_action.style.marginLeft = 10 + "%";
-	detail_action.style.width = 90 + "%";
-	detail_action.style.height = 71 + "%";
-	detail_action.style.background = "green";
-	
+	//detail_action.style.marginLeft = 10 + "%";
+	//detail_action.style.width = 90 + "%";
+	//detail_action.style.height = 71 + "%";
+	//detail_action.style.background = "green";
+
 	//Affichage du titre
-	var titre_span = document.createElement("span");
+	var titre_span = document.createElement("div");
+	titre_span.style.width = 100 + "%";
+	titre_span.style.height = 10 + "%";
 	titre_span.innerHTML = objet.name;
-	
-	//Pour rendre beau l'affichage 
+	detail_action.style.border = "1px solid yellow";
+	detail_action.appendChild(titre_span);
+
+	/*//Pour rendre beau l'affichage 
 	var caracImage_div = document.createElement("div");
 	caracImage_div.id = "caracImage_piece";
-	caracImage_div.style.width = 100 + "%";
-	caracImage_div.style.height = 20 + "%";
-	caracImage_div.style.border = "1px solid black";
-	
-	//Affichage de l'image
+	caracImage_div.style.width = 40 + "%";
+	caracImage_div.style.height = 100 + "%";
+	caracImage_div.style.border = "1px solid red";*/
+
+	//Affichage de l'image div dans laquelle est l'image
 	var image_div = document.createElement("img");
 	image_div.id = "image_objet";
 	image_div.src = objet.image;
 	image_div.style.float = "left";
 	image_div.style.width = 40 + "%";
-	image_div.style.height = 100 + "%";
-	
+	image_div.style.height = 90 + "%";
+	image_div.style.border = "1px solid red";
+	detail_action.appendChild(image_div);
+
+	//Div des paramètre objet
+	var pObj_div = document.createElement("div");
+	pObj_div.id = "param_Obj";
+	pObj_div.style.width = 60 + "%";
+	pObj_div.style.height = 90 + "%";
+	pObj_div.style.border = "1px solid white";
+	image_div.style.float = "right";
+	detail_action.appendChild(pObj_div);
+
 	//Affichage des carac de base d'un objet 
 	var carac_div = document.createElement("div");
 	carac_div.id = "carac_div";
 	carac_div.style.marginLeft = 40 + "%";
-	carac_div.style.width = 60 + "%";
-	carac_div.style.height = 100 + "%";
-	carac_div.style.border = "1px solid black";
-	
+	carac_div.style.width = 50 + "%";
+	carac_div.style.height = 10 + "%";
+	carac_div.style.border = "1px solid blue";
+	pObj_div.appendChild(carac_div);
+
 	//ON/OFF
 	var onOff_p = document.createElement("p");
 	onOff_p.style.width = 100 + "%";
-	onOff_p.style.height = 20 + "%";
+	onOff_p.style.height = 10 + "%";
+
+	//label
 	var onOfflabel_p = document.createElement("label");
 	onOfflabel_p.style.float = "left";
 	onOfflabel_p.style.width = 40 + "%";
 	onOfflabel_p.innerHTML = "Allumer :";
+	onOff_p.appendChild(onOfflabel_p);
+
+	//button
 	var buttononOff_p = document.createElement("button");
 	buttononOff_p.style.float = "left";
 	buttononOff_p.style.width = 60 + "%";
@@ -165,16 +185,14 @@ var affichageObjet = function(piece, objet){
 			buttononOff_p.innerHTML = "ON";
 		else
 			buttononOff_p.innerHTML = "OFF";
-		
-		alert("Votre " + objet.name + " est bien " + buttononOff_p.innerHTML + "!");
+
+		alert("Votre " + objet.name + " est bien " + buttononOff_p.innerHTML + "!");			
 		//MAJ du plan
 		//home.etages[home.selectEtage].affichage();
 	}
-	
-	onOff_p.appendChild(onOfflabel_p);
 	onOff_p.appendChild(buttononOff_p);	
-	carac_div.appendChild(onOff_p);
-	
+	pObj_div.appendChild(onOff_p);
+
 	//Statut
 	var statut_p = document.createElement("p");
 	statut_p.style.width = 100 + "%";
@@ -187,28 +205,30 @@ var affichageObjet = function(piece, objet){
 		statutlabel_p.innerHTML += "Indisponible";
 	else
 		statutlabel_p.innerHTML += "Disponible";
-	
-	
+	statut_p.appendChild(statutlabel_p);
+	carac_div.appendChild(statut_p);
+
+
 	//Affichage des actions
 	if(!objet.occuper){
-		var listAction = document.createElement("div");
+		var listAction = document.createElement("div");		
+		listAction.style.border = "1px solid purple";
+		listAction.style.width = 30 + "%";
 		objet.actions.forEach(function(element) {
 			var div_action = document.createElement("div");
-			div_action.style.border = "1px solid black";
-		
+
+
 			var span_action = document.createElement("span");
 			span_action.innerHTML = element.name + " :" ;
 			span_action.style.float = "left";
-		
+
 			var buttonDetail = document.createElement("button");
 			buttonDetail.innerHTML = "+";
-			buttonDetail.style.marginLeft = 95 + "%";
+			buttonDetail.style.marginLeft = "auto";
 			buttonDetail.style.width = 5 + "%";
-			
-			//Permet d'avoir plus de detail sur l'action
 			div_action.onclick = function(){
 				if(buttonDetail.innerHTML == "+"){
-					div_action.appendChild(affichageAction(piece, element));
+						div_action.appendChild(affichageAction(piece, element));
 					buttonDetail.innerHTML = "-";
 				}else if(buttonDetail.innerHTML == "-"){
 					div_action.removeChild(div_action.lastChild);
@@ -216,63 +236,22 @@ var affichageObjet = function(piece, objet){
 				}
 			}
 			//span_action.style.float = "right";
-		
+
 			div_action.appendChild(span_action);
 			div_action.appendChild(buttonDetail);
-			listAction.appendChild(div_action);
+			listAction.appendChild(div_action);			
 			console.log(element);
 		});
 	}
-	statut_p.appendChild(statutlabel_p);
-	carac_div.appendChild(statut_p);
-	
-	caracImage_div.appendChild(image_div);
-	caracImage_div.appendChild(carac_div);
-	
-	detail_action.appendChild(titre_span);
-	detail_action.appendChild(caracImage_div);
+	//caracImage_div.appendChild(image_div);
+	//detail_action.appendChild(carac_div);
+
 	if(!objet.occuper)
 		detail_action.appendChild(listAction);
 	//detail_action.appendChild(planaction_div);
 	//detail_action.appendChild(objetlist_div);
-	
+	pObj_div.appendChild(listAction);
 	parent.appendChild(detail_action);
-}
-
-//Change tous les volets de la maison
-var changeAllVolet = function(b){
-  home.etages.forEach(function(etage){
-    etage.pieces.forEach(function(piece){
-      piece.volet = b;
-    })
-  });
-  if(b)
-    alert("Tous les volets de la maison sont maintenant ouvert");
-  else
-    alert("Tous les volets de la maison sont maintenant fermé");
-}
-
-//chnage toutes les lumieres de la maison
-var changeAllLight = function(b){
-  home.etages.forEach(function(etage){
-    etage.pieces.forEach(function(piece){
-      piece.light = b;
-    })
-  });
-  if(b)
-    alert("Toutes les lumieres de la maison sont maintenant allumé");
-  else
-    alert("Toutes les lumieres de la maison sont maintenant éteintes");
-}
-
-//change la temperature de la maison
-var changeAllTemp = function(temp){
-    home.etages.forEach(function(etage){
-    etage.pieces.forEach(function(piece){
-      piece.temp = temp;
-    })
-  });
-  document.getElementById("temp_maison").innerHTML = temp + "°c";
 }
 
 var affichageAction = function(p,action){
@@ -417,16 +396,18 @@ var affichageAction = function(p,action){
 	return div_action;
 }
 
-//Affichages de la liste des objets
 function listObjet(doc) {
+	// Liste des objets
 	var objetlist_div = document.createElement("div");
 	objetlist_div.id = "listObjet_piece";
-	objetlist_div.style.width = 100 + "%";
+	/*objetlist_div.style.width = 100 + "%";
 	objetlist_div.style.height = 100 + "%";
-	objetlist_div.style.background = "green";
-	
+	objetlist_div.style.background = "green";*/
+
 	doc.objets.forEach(function(element) {
-		objetlist_div.appendChild(element.display);
+		tmp = element.display;
+		objetlist_div.appendChild(tmp);
+		tmp.style.float = "left";
 	});
 	return objetlist_div;
 }
@@ -452,18 +433,19 @@ function lancementAction(p,a,d, t){
 
 //Fonction servant à limiter le nombre de caractere  dans une textarea
 function maxLength(element, max){
-    value = parseInt(element.value);
+	value = parseInt(element.value);
+	console.log(element.id);
 	if(element.id == "heure"){
 		if(value > 24) element.value = 24;
 		if(value < 0) element.value = 0;
 	}
 	if(element.id == "minute")
 		if(value > 60) element.value = 60;
-		if(value < 0) element.value = 0;
-    max = parseInt(max);
-    if(value.length > max){
-        element.value = value.substr(0, max);
-    }
+	if(value < 0) element.value = 0;
+	max = parseInt(max);
+	if(value.length > max){
+		element.value = value.substr(0, max);
+	}
 }
 
 //Permet d'afficher la bonne page
@@ -475,9 +457,10 @@ var affichagePage = function(doc){
 	var mytasks = document.getElementById("myTasks");
 	mytasks.style.display = "none";
 	document.getElementById("retour").style.display = "block";
-  
-	if(doc.id == "retour") doc.name = pagePrecedent;
-  
+
+  if (doc.id == "retour" && doc.name == "myhome") doc.name = "pageAccueil";
+	else if(doc.id == "retour") doc.name = pagePrecedent;
+
 	//MY HOME
 	if(doc.name == "myhome"){
 		//affiche les bon elements
@@ -486,48 +469,51 @@ var affichagePage = function(doc){
 		for (var i = 0; i < enfant.length; i++) {
 			enfant[i].style.display = "block";
 		}
-    
+
 		var choixEtage = document.getElementById("choixEtage");
 		while( choixEtage.firstChild) choixEtage.removeChild( choixEtage.firstChild);
-    
+
 		//ajoute les boutons dynamiquement a choixEtage
 		var i = 0;
 		home.etages.forEach(function(etage) {
-		  var tmp = document.createElement("button");
-		  tmp.name = "etage" + i;
-		  tmp.id = "boutonsEtages";
-		  tmp.innerHTML = etage.name;
-		  tmp.onclick = function(){
-		    home.selectEtage = tmp.name.substring(5, 6);
-		    home.etages[home.selectEtage].affichage();
-		  };
-		  choixEtage.appendChild(tmp);
-		  i++;
-	  });
-	  home.etages[home.selectEtage].affichage();
+			var tmp = document.createElement("button");
+			tmp.name = "etage" + i;
+			tmp.id = "boutonsEtages";
+			tmp.innerHTML = etage.name;
+			tmp.setAttribute('class', "btn btn-secondary btn-sm");
+			tmp.onclick = function(){
+				home.selectEtage = tmp.name.substring(5, 6);
+				home.etages[home.selectEtage].affichage();
+			};
+			choixEtage.appendChild(tmp);
+			i++;
+		});
+		home.etages[home.selectEtage].affichage();
 	}
-	
+
 	// My TASKS
-  if(doc.name == "mytasks"){
-    //affiche les bon elements
-	mytasks.style.display = "block";
-	var enfant = mytasks.getElementsByTagName("Div");
-    for (var i = 0; i < enfant.length; i++) {
-      enfant[i].style.display = "block";
-    }
-  }
-  
-  // Page Accueil
-  if(doc.name == "pageAccueil"){
-    //affiche les bon elements
-    document.getElementById("retour").style.display = "none";
-	  accueil.style.display = "block";
-	  var enfant = accueil.getElementsByTagName("Div");
-    for (var i = 0; i < enfant.length; i++) {
-      enfant[i].style.display = "block";
-    }
-  }
-  
+	if(doc.name == "mytasks"){
+	  if(doc.id == "bParam") pagePrecedent = "myhome";
+		//affiche les bon elements
+		mytasks.style.display = "block";
+		var enfant = mytasks.getElementsByTagName("Div");
+		for (var i = 0; i < enfant.length; i++) {
+			enfant[i].style.display = "block";
+		}
+	}
+
+	// Page Accueil
+	if(doc.name == "pageAccueil"){
+	  pagePrecedent = "pageAccueil";
+		//affiche les bon elements
+		document.getElementById("retour").style.display = "none";
+		accueil.style.display = "block";
+		var enfant = accueil.getElementsByTagName("Div");
+		for (var i = 0; i < enfant.length; i++) {
+			enfant[i].style.display = "block";
+		}
+	}
+
 }
 
 //Genere les listes des taches 
@@ -687,6 +673,7 @@ var generateListTasks = function(){
 	});
 }
 
+
 //Calcule la difference entre deux dates
 function diffdate(d1,d2,u){
 	div=1;
@@ -731,45 +718,58 @@ var new_progess = function(name){
 var affichagePiece = function(doc){
 	if(document.getElementById("detail_piece"))
 		document.getElementById("myHome").removeChild(document.getElementById("myHome").lastChild);
-		
+
 	//div principal de l'affichage
 	var detail_div = document.createElement("div");
 	detail_div.id = "detail_piece";
-	detail_div.style.marginLeft = 10 + "%";
+	/*detail_div.style.marginLeft = 10 + "%";
 	detail_div.style.width = 80 + "%";
 	detail_div.style.height = 80 + "%";
 	detail_div.style.background = "gray";
 	detail_div.style.opacity = 80 + "%";
-	detail_div.style.position = "absolute";
-  
+	detail_div.style.position = "absolute";*/
+
+
 	//Affichage du titre
-	var titre_span = document.createElement("span");
-	titre_span.height = 10 + "%";
+	var titre_span = document.createElement("div");
+	titre_span.id = "Nom_piece";
 	titre_span.innerHTML = doc.name;
-  
+	/*titre_span.height = 10 + "%";*/
+
+	//bouton fermer
+	var buttonclose = document.createElement("button");
+	buttonclose.id = "close";
+	buttonclose.setAttribute('class', "btn btn-danger");
+	//buttonclose.innerHTML = '<img src="Icone/fermer.png" width="20" height="20" margin-left = "0"/>';;
+	buttonclose.onclick = function(){
+	  if(document.getElementById("detail_piece"))
+      document.getElementById("myHome").removeChild(document.getElementById("detail_piece"));
+	};
+	titre_span.appendChild(buttonclose);
+
 	//Div avec mini plan + action de la piece
 	var planaction_div = document.createElement("div");
 	planaction_div.id = "planAction_piece";
 	planaction_div.style.width = 100 + "%";
 	planaction_div.style.height = 20 + "%";
-	
+
 	// mini plan
 	//TODO A FAIRE 
 	var miniplan_div = document.createElement("div");
 	miniplan_div.id = "miniplan_piece";
-	miniplan_div.style.float = "left";
+	/*miniplan_div.style.float = "left";
 	miniplan_div.style.width = 40 + "%";
 	miniplan_div.style.height = 100 + "%";
-	miniplan_div.style.background = "red";
-	
+	miniplan_div.style.background = "red";*/
+
 	// les actions de chaque piece
 	var action_div = document.createElement("div");
 	action_div.id = "action_piece";
-	action_div.style.marginLeft = 40 + "%";
+	/*action_div.style.marginLeft = 40 + "%";
 	action_div.style.width = 60 + "%";
 	action_div.style.height = 100 + "%";
-	action_div.style.background = "blue";
-	
+	action_div.style.background = "blue";*/
+
 	//Pour allumer la lumiere
 	var light_p = document.createElement("p");
 	light_p.style.width = 100 + "%";
@@ -795,11 +795,11 @@ var affichagePiece = function(doc){
 		//MAJ du plan
 		//home.etages[home.selectEtage].affichage();
 	}
-	
+
 	light_p.appendChild(labellight_p);
 	light_p.appendChild(buttonlight_p);	
 	action_div.appendChild(light_p);
-	
+
 	//Pour regler la temperature
 	var temp_p = document.createElement("p");
 	temp_p.style.width = 100 + "%";
@@ -824,12 +824,12 @@ var affichagePiece = function(doc){
 		doc.temp = slidertemp_p.value;
 		labeltempAff_p.innerHTML = " " + doc.temp + "°C";
 	}
-	
+
 	temp_p.appendChild(labeltemp_p);
 	temp_p.appendChild(slidertemp_p);
 	temp_p.appendChild(labeltempAff_p);	
 	action_div.appendChild(temp_p);
-	
+
 	//Pour allumer la lumiere
 	var volet_p = document.createElement("p");
 	volet_p.style.width = 100 + "%";
@@ -845,7 +845,7 @@ var affichagePiece = function(doc){
 		buttonvolet_p.innerHTML = "Fermer";
 	else
 		buttonvolet_p.innerHTML = "Ouvrir";
-	
+
 	buttonvolet_p.onclick = function(){
 		doc.volet = !doc.volet;
 		if(doc.volet)
@@ -856,39 +856,76 @@ var affichagePiece = function(doc){
 		//MAJ du plan
 		//home.etages[home.selectEtage].affichage();
 	}
-	
+
 	volet_p.appendChild(labelvolet_p);
 	volet_p.appendChild(buttonvolet_p);	
 	action_div.appendChild(volet_p);
-	
+
 	planaction_div.appendChild(miniplan_div);
 	planaction_div.appendChild(action_div);
-	
-  detail_div.appendChild(titre_span);
-  detail_div.appendChild(planaction_div);
-  detail_div.appendChild(listObjet(doc));
-  document.getElementById("myHome").appendChild(detail_div);
+
+	detail_div.appendChild(titre_span);
+	detail_div.appendChild(planaction_div);
+	detail_div.appendChild(listObjet(doc));
+	document.getElementById("myHome").appendChild(detail_div);
 }
 
-//permet de mettre a jour les taches
+//Change tous les volets de la maison
+var changeAllVolet = function(b){
+  home.etages.forEach(function(etage){
+    etage.pieces.forEach(function(piece){
+      piece.volet = b;
+    })
+  });
+  if(b)
+    alert("Tous les volets de la maison sont maintenant ouvert");
+  else
+    alert("Tous les volets de la maison sont maintenant fermé");
+}
+
+//chnage toutes les lumieres de la maison
+var changeAllLight = function(b){
+  home.etages.forEach(function(etage){
+    etage.pieces.forEach(function(piece){
+      piece.light = b;
+    })
+  });
+  if(b)
+    alert("Toutes les lumieres de la maison sont maintenant allumé");
+  else
+    alert("Toutes les lumieres de la maison sont maintenant éteintes");
+}
+
+//change la temperature de la maison
+var changeAllTemp = function(temp){
+    home.etages.forEach(function(etage){
+    etage.pieces.forEach(function(piece){
+      piece.temp = temp;
+    })
+  });
+  document.getElementById("temp_maison").innerHTML = temp + "°c";
+}
+
+//permet de mettre a jour les taches toutes les secondes
 setInterval(generateListTasks, 1000);
 
-// Variable globale
+//Variable globale
 var pagePrecedent = "pageAccueil";
 
-// Simule la recuperation des données de bases de la maison
+//Simule la recuperation des données de bases de la maison
 var home = new Maison();
 
 var etage1 = new Etage("1er Etage");
 var etage2 = new Etage("2eme Etage");
 
 var chambre = new Piece("Chambre", 0,0,210,100);
-var wc = new Piece("Toilette", 110,110,100,100);
-var cuisine = new Piece("cuisine", 0,110,100,100);
-var salleDeBains = new Piece("salle de bain", 50, 105, 100, 75);
+var wc = new Piece("Toilettes", 110,110,100,100);
+var cuisine = new Piece("Cuisine", 0,110,100,100);
+var salleDeBains = new Piece("Salle de bain", 50, 105, 100, 75);
 
 var four = new Objet(cuisine, "Four", "four.png");
 var reveil = new Objet(chambre, "Reveil", "reveil.png");
+var frigo = new Objet(cuisine, "Frigo", "Icone/fridge.png");
 
 var cuisson = new Action("Cuisson", "degree", "°C");
 var alarme = new Action("Alarme");

@@ -1,89 +1,254 @@
 button {
-	display:block;
+	display: block;
+	width: 50%;
+	margin: 0 auto;
 }
 
 body {
-  /*page entière centrée*/
+	/*page entière centrée*/
 	min-height: 100%;
 	width: 750px;
-	padding: 0 10px;
+	padding: 0;
 	margin: 0 auto;
 	position: relative;
-	background-color:black;
+	background: url(Background/3.jpg) no-repeat;
+	background-size: 100% 100%;
 }
 
 div#center {
 	/* Pour éviter la superposition du pied de page et du contenu : */
-	padding-bottom: 50px; 
+	padding-bottom: 50px;
 }
 
+div#titre {
+	top: 0;
+	width: 100%;
+	height: 70px;
+	text-align: center;
+	background-color: 0b2027;
+	font: italic bold 12px/30px Georgia, serif;
+}
+
+/*bouton retour*/
+#retour {
+	margin-top: 10px;
+	height: 50px;
+	width: 75px;
+	float: left;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: 1f5673;
+}
+
+/*background etage maison*/
 div#etages {
-  /*sur centré*/
-	width:300px;
-	height:300px;
-	margin-top: 270px;
+	/*sur centré*/
+	position: absolute;
+	text-align: center;
+	width: 300px;
+	height: 300px;
+	margin-top: 100px;
 	margin-bottom: 270px;
 	margin-right: 270px;
 	margin-left: 270px;
-	
-	background-color:navy;
+	background-color: navy;
+	width: 300px;
 }
 
+/*panneau lat�ral gauche*/
 div#choixEtage {
-  /*sur la gauche*/
+	/*sur la gauche*/
 	float: left;
+	margin-top: 0;
 	width: 100px;
-	height:100%;
-	background-color:silver;
+	height: 85%;
+	background-color: 759fbc;
+	box-shadow: 1px 1px 5px grey;
 }
-
 #boutonsEtages {
-  margin-top: 15px;
-  background-image: -webkit-linear-gradient(top, white, gray);
-  }
-
-div#titre {
-  top : 0;
-	width:740px;
-	height:50px;
-	text-align: center;
-	background-color: gray;
+	width: 90px;
+	margin-top: 15px;
+	background-image: -webkit-linear-gradient(top, white, gray);
+	box-shadow: 2px 2px 5px black;
 }
- 
-/*Texte du titre*/
-span {
-  display:inline-block;
-  line-height:1.3em;
-  vertical-align:middle;
-  }
+#boutonsEtages:focus {
+	background: darkgrey;
+}
 
+/*au pied de page*/
 div#infoGlobale {
-  /*au pied de page*/
 	position: absolute;
-	width: 640px;
-	height:100px;
+	width: 650px;
+	height: 100px;
 	bottom: 0;
-	left : 110px;
-	float : right;
-	background-color:silver;
+	left: 100px;
+	float: right;
+	background-color: 759fbc;
 }
 
 div#paramGen {
-  /*coin bas/gauche*/
+	/*coin bas gauche*/
 	position: absolute;
 	width: 100px;
-	height:100px;
+	height: 100px;
 	bottom: 0;
-	float : left;
-	background-color:gray;
+	float: left;
+	background-color: 1f5673;
+	border-radius: 5px 10px 0 5px;
+	z-index: 10;
+	box-shadow: 0px 0px 2px 0b2027, 0 0 25px 1898ce, 0 0 5px 1f5673;
+	/*box-shadow: 0 0 20px 20px white;*/
+}
+
+/*bouton param Gx*/
+#bParam {
+	text-align: left;
+	height: 100px;
+	width: 100px;
+	float: left;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: 1f5673;
+}
+#bParam.text {
+	position: relative;
+	bottom: 30px;
+	left: 0px;
+	visibility: hidden;
+}
+#bParam:hover.text {
+	visibility: visible;
+}
+
+	/*Fenetre action objet*/
+	#detail_objet {
+		text-align: left;
+		position: relative;
+		z-index: 1000;
+		height: 57%;
+		width: 100%;
+		float: left;
+		background-color:1f5673;
+	}
+	
+	#nom_piece {
+		text-align: center;
+		position: relative;
+		z-index: 1000;
+		height: 10%;
+		width: 100%;
+		text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+	            	 0px 8px 13px rgba(0,0,0,0.1),
+	             	0px 18px 23px rgba(0,0,0,0.1);
+		float: left;
+		text-decoration: underline;
+		font: italic bold 12px/30px Georgia, serif;
+		font-size: 150%;
+		color : white;
+		line-height: 1.3em;
+		vertical-align: middle;
+	}
+	
+	#listObjet_piece {
+		text-align: left;
+		position: relative;
+		z-index: 1000;
+		height: 50%;
+		width: 100%;
+		float: left;
+		background-color: 1f5673;
+	}
+	#listObjet_piece.p {
+    float: right;
+    margin: 0 10px 0 0;
+	}
+	
+	#detail_piece {
+		position: absolute;
+		z-index: 1000;
+		height: 74%;
+		width: 650px;
+		margin-left: 100px;
+		border: 2px solid white; padding : 10px; border-radius : 25px;
+		background-color: 1898ce;
+		padding: 10px;
+		border-radius: 25px;
+	}
+	
+	
+	#miniplan_piece {
+		position: relative;
+		text-align: justify;
+		border: 2px solid white;
+		padding: 10px;
+		border-radius: 25px;
+		z-index: 1000;
+		height: 150px;
+		width: 40%;
+		float: left;
+		background-color: BBBBBB;
+	}
+	
+	#action_piece {
+		position: relative;
+		z-index: 1000;
+		height: 150px;
+		width: 60%;
+		float: right;
+		background-color: FFFFFF;
+	}
+	
+	/*bouton fermer*/
+	#close {
+		position: relative;
+		z-index: 1000;
+		height: 25px;
+		width: 10px;
+		float: right;
+	}
+
+	
+	/*fenetre objet*/
+	#fenetreObj {
+		position: relative;
+		z-index: 1000;
+		height: 50%;
+		width: 50%;
+		background-color: 1f5673;
+	}
+
+
+
+/*Couleur boutons*/
+.btn-primary, .btn-primary:active, .btn-primary:visited, .btn-primary:focus
+	{
+	background-color: #1f5673;
+	border-color: #1f5673;
+}
+
+.btn-primary:hover {
+	background-color: #133547;
+	border-color: 759fbc;
+}
+
+.btn-light, .btn-light:active, .btn-light:visited, .btn-light:focus {
+	background-color: #759fbc;
+	border-color: #759fbc;
+}
+
+.btn-light:hover {
+	background-color: #557389;
+	border-color: e1e8e2;
 }
 
 div#myhome {
-  display:none;
+	display: none;
 }
+
 div#mytasks {
-  display:none;
+	display: none;
 }
+
 #retour {
-  display:none;
+	display: none;
 }

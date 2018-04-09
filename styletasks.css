@@ -1,0 +1,73 @@
+		#menu-mytasks {
+		  padding:0;
+		  margin:0;
+		  list-style:none;
+		  text-align: center;
+		  width: 100%;
+		  font-size:1em;
+		  font-family:arial, sans-serif;
+		}
+		#menu-mytasks ul {
+		  padding:0;
+		  margin:0;
+		  list-style:none;
+		  text-align: center;
+		}
+		#menu-mytasks li {
+		   background-color:#729EBF; 
+		   background-image:-webkit-linear-gradient(top, #729EBF 0%, #333A40 100%);
+		   background-image: linear-gradient(to bottom, #729EBF 0%, #333A40 100%);
+		   border-radius: 6px;
+		   margin-bottom:2px;
+		   box-shadow: 3px 3px 3px #999;
+		   border:solid 1px #333A40
+		}
+		#menu-mytasks li li {
+		   max-height:0;
+		   overflow: hidden;
+		   transition: all .5s;
+		   border-radius:0;
+		   background: #999;
+		   box-shadow: none;
+		   border:none;
+		   margin:0
+		}
+		#menu-mytasks a {
+		  display:block;
+		  text-decoration: none;
+		  color: #fff;
+		  padding: 8px 0;
+		}
+		#menu-mytasks ul li a {
+			font-size:0.9em
+		}
+		#menu-mytasks li:hover, #menu-mytasks li:focus {
+		   background: #729EBF;
+		}
+		#menu-mytasks li li:hover {
+		   background: #444;
+		}
+		#menu-mytasks ul li:last-child {
+		   border-radius: 0 0 6px 6px;
+		   border:none;
+		}
+		#menu-mytasks li:hover li, #menu-mytasks li:focus li {
+		  max-height: 20em;
+		}
+		@media screen and (max-width:1024px) {
+			#menu-mytasks li:hover li {
+				max-height: 0;
+			}
+			#menu-mytasks li.active li {
+				padding-top: 5px;
+				max-height: 20em;
+			}
+			#menu-mytasks li.active {
+				background: #729EBF
+			}
+			#menu-mytasks li:hover {
+				background-color:#729EBF; 
+				background-image:-webkit-linear-gradient(top, #729EBF 0%, #333A40 100%);
+				background-image: linear-gradient(to bottom, #729EBF 0%, #333A40 100%);
+			}
+		}

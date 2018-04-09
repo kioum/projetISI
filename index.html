@@ -1,119 +1,62 @@
 <html>
-  <head>
-    <title>My Smart Home</title>
-	<script type="text/javascript" src="jquery.js" ></script>
-	<script type="text/javascript" src="maison.js" ></script>
-    <link href="style.css" rel="stylesheet" />
-	<style>
-		#menu-mytasks {
-		  padding:0;
-		  margin:0;
-		  list-style:none;
-		  text-align: center;
-		  width: 100%;
-		  font-size:1em;
-		  font-family:arial, sans-serif;
-		}
-		#menu-mytasks ul {
-		  padding:0;
-		  margin:0;
-		  list-style:none;
-		  text-align: center;
-		}
-		#menu-mytasks li {
-		   background-color:#729EBF; 
-		   background-image:-webkit-linear-gradient(top, #729EBF 0%, #333A40 100%);
-		   background-image: linear-gradient(to bottom, #729EBF 0%, #333A40 100%);
-		   border-radius: 6px;
-		   margin-bottom:2px;
-		   box-shadow: 3px 3px 3px #999;
-		   border:solid 1px #333A40
-		}
-		#menu-mytasks li li {
-		   max-height:0;
-		   overflow: hidden;
-		   transition: all .5s;
-		   border-radius:0;
-		   background: #999;
-		   box-shadow: none;
-		   border:none;
-		   margin:0
-		}
-		#menu-mytasks a {
-		  display:block;
-		  text-decoration: none;
-		  color: #fff;
-		  padding: 8px 0;
-		}
-		#menu-mytasks ul li a {
-			font-size:0.9em
-		}
-		#menu-mytasks li:hover, #menu-mytasks li:focus {
-		   background: #729EBF;
-		}
-		#menu-mytasks li li:hover {
-		   background: #444;
-		}
-		#menu-mytasks ul li:last-child {
-		   border-radius: 0 0 6px 6px;
-		   border:none;
-		}
-		#menu-mytasks li:hover li, #menu-mytasks li:focus li {
-		  max-height: 20em;
-		}
-		@media screen and (max-width:1024px) {
-			#menu-mytasks li:hover li {
-				max-height: 0;
-			}
-			#menu-mytasks li.active li {
-				padding-top: 5px;
-				max-height: 20em;
-			}
-			#menu-mytasks li.active {
-				background: #729EBF
-			}
-			#menu-mytasks li:hover {
-				background-color:#729EBF; 
-				background-image:-webkit-linear-gradient(top, #729EBF 0%, #333A40 100%);
-				background-image: linear-gradient(to bottom, #729EBF 0%, #333A40 100%);
-			}
-		}
-	</style>
-  </head>
-  <body>
-  <div id ="titre"> <span> <p>SMART</p></span>
-		  <img id ="retour" src="retour.png" alt="Preferences" onclick="affichagePage(this)"/>
+<head>
+<title>My Smart Home</title>
+<script type="text/javascript" src="maison.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styletasks.css">
+</head>
+<body>
+	<div class="container-fluid" id="titre">
+		<span> <img id="logo" src="Icone/MySmart Homr.png" alt="Preferences" />
+		</span>
+		<button name="retour" id="retour" class="btn btn-secondary"
+			onclick="affichagePage(this)">
+			<img src="Icone/retour-icone.png" alt="Preferences" /> <br />
+		</button>
 	</div>
-  
-  <div id="pageAccueil">
-    <button name = "myhome" onclick="affichagePage(this)">
-		    <img src="home.png" alt="home"/>
-		  <br/>
-		  My Home
-	  </button>
-	  <button name = "mytasks" onclick="affichagePage(this)">
-		  <img src="tasks.png" alt="tasks"/>
-		  <br/>
-		  My Tasks
-	  </button>
-	  <button name = "mypref" onclick="affichagePage(this)">
-		  <img src="preferences.png" alt="Preferences"/>
-		  <br/>
-		  Preferences
-	  </button>
-  </div>
+
+	<div class="container-fluid" id="pageAccueil">
+		<div class="text-center">
+			<button name="myhome" class="btn btn-primary"
+				onclick="affichagePage(this)">
+				<img src="Icone/home.png" alt="home" /> <br /> My Home
+			</button>
+		</div>
+		<div class="text-center">
+			<button name="mytasks" class="btn btn-light"
+				onclick="affichagePage(this)">
+				<img src="Icone/tasks.png" alt="tasks" /> <br /> My Tasks
+			</button>
+		</div>
+		<div class="text-center">
+			<button name="mypref" class="btn btn-secondary"
+				onclick="affichagePage(this)">
+				<img src="Icone/preferences.png" alt="Preferences" /> <br /> Preferences
+			</button>
+		</div>
+	</div>
 
 	<div id="myHome">
-	  	<div id ="choixEtage"> </div>
-    	<div id ="paramGen">  </div>
-	    <div id ="infoGlobale">  
-	      <span>Parametres de la maison :</span>
+		<div id="choixEtage" class="text-center"></div>
+
+		<div id="paramGen">
+			<button name="mytasks" class="btn btn-primary" id="bParam"
+				onclick="affichagePage(this)" data-toggle="tooltip"
+				data-placement="auto top" title="Param?tres G?n?raux" >
+				<img src="Icone/try3.png" alt="Preferences" /> <br />
+			</button>
+			<!--  <img src="try.png" alt="Preferences" /> <br /> -->
+		</div>
+
+		<div id="infoGlobale">
+		  <span>Parametres de la maison :</span>
 	      <div id = "paramMaison"><span> Tous les volets</span><button onclick="changeAllVolet(true)">Ouvrir</button><button onclick="changeAllVolet(false)">Fermer</button></div>
 	      <div id = "paramMaison"><span> Toutes les lumieres</span><button onclick="changeAllLight(true)">Allumer</button><button onclick="changeAllLight(false)">Eteindre</button></div>
 	      <div id = "paramMaison"><span>Changer température : </span><input type="range" value=23 min=0 max=40 onchange="changeAllTemp(this.value)"></div> <span id="temp_maison">23°c</span>
 	    </div>
 	</div>
-  
+
 	<div id="myTasks">
 		<ul id="menu-mytasks">
 		   <li><a href="#">Taches en cours</a>
@@ -130,7 +73,20 @@
 		   </li>
 		</ul>
 	</div>
-	<script>
+
+	<div id="preferences"></div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+    <script>
     $(document).ready(function(){
         $('#menu-mytasks>li').click(function(){
             $(this).toggleClass('active');
@@ -138,8 +94,5 @@
         })   
     });
 	</script>
-	<div id="preferences">
-	  
-	</div>
-  </body>
+</body>
 </html>
