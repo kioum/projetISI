@@ -4,6 +4,7 @@
 <script type="text/javascript" src="maison.js"></script>
 <link rel="stylesheet" href="bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styletasks.css">
 </head>
 <body>
 	<div class="container-fluid" id="titre">
@@ -40,25 +41,36 @@
 		<div id="choixEtage" class="text-center"></div>
 
 		<div id="paramGen">
-			<button name="General" class="btn btn-primary" id="bParam"
+			<button name="mytasks" class="btn btn-primary" id="bParam"
 				onclick="affichagePage(this)" data-toggle="tooltip"
-				data-placement="auto top" title="ParamËtres GÈnÈraux" >
+				data-placement="auto top" title="Param?tres G?n?raux" >
 				<img src="Icone/try3.png" alt="Preferences" /> <br />
 			</button>
-			<!--  <img src="try.png" alt="Preferences" /> <br /> -->
 		</div>
 
-		<div id="infoGlobale"></div>
+		<div id="infoGlobale">
+		  <!--  <span id = "titreP">Parametres de la maison :</span>-->
+	      <div id = "volets"><span> Tous les volets</span><button id="vOuvert" class="btn btn-primary btn-sm" onclick="changeAllVolet(true)">Ouvrir</button><button id="vFermer" class="btn btn-primary btn-sm" onclick="changeAllVolet(false)">Fermer</button></div>
+	      <div id = "lumieres"><span> Toutes les lumieres</span><button id="lOuvert" class="btn btn-primary btn-sm" onclick="changeAllLight(true)">Allumer</button><button id="lFermer" class="btn btn-primary btn-sm" onclick="changeAllLight(false)">Eteindre</button></div>
+	      <div id = "temperature"><span>Changer temp√©rature : </span id="slider"><input type="range" value=23 min=0 max=40 onchange="changeAllTemp(this.value)">23¬∞c</div> 
+	    </div>
 	</div>
 
 	<div id="myTasks">
-		<select id="tachesCours">
-			<option selected hidden>Taches en cours</option>
-		</select> <select id="tachesProg">
-			<option selected hidden>Taches programm√©es</option>
-		</select> <select id="tachesFinies">
-			<option selected hidden>Taches finies</option>
-		</select>
+		<ul id="menu-mytasks">
+		   <li><a href="#">Taches en cours</a>
+			  <ul id="tachesCours">
+			  </ul>
+		   </li>
+			<li><a href="#">Taches programm√©es</a>
+			  <ul id="tachesProg">
+			  </ul>
+		   </li>
+		   <li><a href="#">Taches finies</a>
+			  <ul id = "tachesFinies">
+			  </ul>
+		   </li>
+		</ul>
 	</div>
 
 	<div id="preferences"></div>
@@ -73,6 +85,13 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
-
+    <script>
+    $(document).ready(function(){
+        $('#menu-mytasks>li').click(function(){
+            $(this).toggleClass('active');
+            $(this).siblings().removeClass('active');
+        })   
+    });
+	</script>
 </body>
 </html>
