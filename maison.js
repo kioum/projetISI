@@ -32,6 +32,58 @@ Etage.prototype.majAffichage = function(){
 	});
 }
 
+//for each pour affichage d'un etage( ensemble de piece)
+Etage.prototype.miniDisplay = function(parent, name){
+	var etage = this;
+	this.pieces.forEach(function(element) {
+	  if (document.getElementById("mini_"+element.name+etage.name)){
+	      var new_div = document.getElementById("mini_"+element.name+etage.name);
+	  }
+	  if(parent){
+	    var new_div = document.createElement("div");
+
+	    new_div.id = "mini_"+element.name+etage.name;
+	    new_div.onclick = element.display.onclick;
+	    var x_mini = ((element.x)/etage.display.offsetWidth) * parent.offsetWidth;
+	    var y_mini = ((element.y)/etage.display.offsetHeight) * parent.offsetHeight;
+	  
+	    new_div.style.position = "absolute";
+	    if(element.name == name)
+	      new_div.style.border ="3px solid red";
+	    new_div.style.left = x_mini + "px";
+	    new_div.style.top = y_mini + "px";
+	    new_div.style.width = (parent.offsetWidth/etage.display.offsetWidth) * element.width + "px";
+	    new_div.style.height = (parent.offsetHeight/etage.display.offsetWidth) * element.height + "px";
+
+		var span_titre = document.createElement("span");
+		span_titre.id = "mdrlol"+element.name;
+		span_titre.innerHTML = element.name;
+		span_titre.style.color = "white";
+		if(!document.getElementById("mdrlol"+element.name))
+			new_div.appendChild(span_titre);
+		}
+	
+		if (document.getElementById("mini_"+element.name+etage.name) || parent)
+		if(element.light){
+		  new_div.style.background = "yellow";
+		  if (document.getElementById("span_mouseover"+element.name))
+		    document.getElementById("span_mouseover"+element.name).style.color = "black";
+		  if (document.getElementById("mdrlol"+element.name))
+		    document.getElementById("mdrlol"+element.name).style.color = "black";
+		}
+		else{
+			new_div.style.background = "black";
+			if (document.getElementById("span_mouseover"+element.name))
+				document.getElementById("span_mouseover"+element.name).style.color = "white";
+			if (document.getElementById("mdrlol"+element.name))
+				document.getElementById("mdrlol"+element.name).style.color = "white";
+		}
+		  
+	if(parent)
+		parent.appendChild(new_div);
+	});
+}
+
 var Piece = function (name, x, y, w, h) {
 	this.name = name; // Nom de la piece
 	this.x = x; // Position x de la piece
@@ -43,35 +95,69 @@ var Piece = function (name, x, y, w, h) {
 
 	//Programme on click
 	var piece = this;
+
 	this.display.onclick = function(){
 		affichagePiece(piece);
 	}
+	var span_titre = document.createElement("span");
+	span_titre.id = "span_mouseover" +name;
+	span_titre.innerHTML = name;
+	span_titre.innerHTML = name;
+	span_titre.style.color = "White";
+	  	
+	this.display.onmouseover = function(){	 
+		span_titre.style.color = "black";
+		piece.display.style.background = "white";
+	}
+	
+	this.display.onmouseout = function(){
+	  if(piece.light){
+		piece.display.style.backgroundColor = "yellow";
+		span_titre.style.color = "black";
+	  }
+	  else {
+		 piece.display.style.backgroundColor = "black";
+		 span_titre.style.color = "white";
+	  }
+	}
+	  
 	this.objets = []; // les objets connectees de la pieces
-
-
 	this.light = false; // si les lumieres sont allumees
 	this.temp = 23; // temperature de la piece
 	this.volet = false; // si les volets sont ouvert ou fermer
+	
+	this.display.appendChild(span_titre);
 }
 
 Piece.prototype.affichage = function(e){
 	//recupere la valeur du display parent
 	if(e){
-	  var x = e.display.offsetLeft;
-	  var y = e.display.offsetTop;
 	 this.display.id = this.name+e.name;
 	}
 	
 	this.display.style.position = "absolute";
-	this.display.style.left = (x + this.x) + "px";
-	this.display.style.top = (y + this.y) + "px";
+	this.display.style.left = (this.x) + "px";
+	this.display.style.top = (this.y) + "px";
 	this.display.style.width = this.width + "px";
 	this.display.style.height = this.height + "px";
-
-	if(this.light)
-		this.display.style.backgroundColor = "yellow";
-	else
-		this.display.style.backgroundColor = "black";
+	this.display.style.marginLeft = 45 + "px";
+	this.display.style.marginTop = 45 + "px";
+	
+	if(this.light){
+	  this.display.style.backgroundColor = "yellow";
+	  if (document.getElementById("mdrlol"+this.name))
+		document.getElementById("mdrlol"+this.name).style.color = "black";
+	  if (document.getElementById("span_mouseover"+this.name))
+		document.getElementById("span_mouseover"+this.name).style.color = "black";
+	}
+	else{
+	  this.display.style.backgroundColor = "black";
+	  if (document.getElementById("mdrlol"+this.name))
+		document.getElementById("mdrlol"+this.name).style.color = "white";
+	  if (document.getElementById("span_mouseover"+this.name))
+		document.getElementById("span_mouseover"+this.name).style.color = "white";
+	}		
+		
 	if(e)
 	  e.display.appendChild(this.display);
 }
@@ -131,6 +217,7 @@ var affichageObjet = function(piece, objet){
 
 	//Affichage du titre
 	var titre_span = document.createElement("div");
+	titre_span.id = "nomObj";
 	titre_span.style.width = 100 + "%";
 	titre_span.style.height = 10 + "%";
 	titre_span.innerHTML = objet.name;
@@ -150,8 +237,8 @@ var affichageObjet = function(piece, objet){
 	image_div.src = objet.image;
 	image_div.style.float = "left";
 	image_div.style.width = 40 + "%";
-	image_div.style.height = 90 + "%";
-	image_div.style.border = "1px solid red";
+	//image_div.style.height = 90 + "%";
+	//image_div.style.border = "1px solid red";
 	detail_action.appendChild(image_div);
 
 	//Div des paramètre objet
@@ -159,17 +246,21 @@ var affichageObjet = function(piece, objet){
 	pObj_div.id = "param_Obj";
 	pObj_div.style.width = 60 + "%";
 	pObj_div.style.height = 90 + "%";
-	pObj_div.style.border = "1px solid white";
+	//pObj_div.style.border = "1px solid white";
 	image_div.style.float = "right";
 	detail_action.appendChild(pObj_div);
 
 	//Affichage des carac de base d'un objet 
 	var carac_div = document.createElement("div");
 	carac_div.id = "carac_div";
-	carac_div.style.marginLeft = 40 + "%";
-	carac_div.style.width = 50 + "%";
-	carac_div.style.height = 10 + "%";
-	carac_div.style.border = "1px solid blue";
+	carac_div.style.float = "left";
+	carac_div.style.float = "left";
+	//carac_div.style.marginLeft = 40 + "%";
+	carac_div.style.width = 100 + "%";
+	carac_div.style.height = 20 + "%";
+	carac_div.style.marginTop = 20 + "px";
+	carac_div.style.position = "relative";
+	//carac_div.style.border = "1px solid blue";
 	pObj_div.appendChild(carac_div);
 
 	//ON/OFF
@@ -187,21 +278,23 @@ var affichageObjet = function(piece, objet){
 	//button
 	var buttononOff_p = document.createElement("button");
 	buttononOff_p.style.float = "left";
-	buttononOff_p.style.width = 60 + "%";
+	buttononOff_p.style.width = 40 + "%";
+	buttononOff_p.setAttribute('class', "btn btn-light btn-sm");
 	if(objet.onOff)
 		buttononOff_p.innerHTML = "ON";
 	else
 		buttononOff_p.innerHTML = "OFF";
 	buttononOff_p.onclick = function(){
 		objet.onOff = !objet.onOff;
+
+		alert("Votre " + objet.name + " est bien " + buttononOff_p.innerHTML + "!");	
 		if(objet.onOff)
 			buttononOff_p.innerHTML = "ON";
 		else
 			buttononOff_p.innerHTML = "OFF";
-
-		alert("Votre " + objet.name + " est bien " + buttononOff_p.innerHTML + "!");			
 		//MAJ du plan
 		home.etages[home.selectEtage].majAffichage();
+		home.etages[home.selectEtage].miniDisplay();
 	}
 	onOff_p.appendChild(buttononOff_p);	
 	pObj_div.appendChild(onOff_p);
@@ -225,34 +318,44 @@ var affichageObjet = function(piece, objet){
 	//Affichage des actions
 	if(!objet.occuper){
 		var listAction = document.createElement("div");		
-		listAction.style.border = "1px solid purple";
-		listAction.style.width = 30 + "%";
+		//listAction.style.border = "1px solid purple";
+		listAction.style.position = "relative";
+		listAction.style.width = 100 + "%";
+		listAction.style.height = 20 + "%";
 		objet.actions.forEach(function(element) {
 			var div_action = document.createElement("div");
-
-
-			var span_action = document.createElement("span");
-			span_action.innerHTML = element.name + " :" ;
+			
+			var span_action = document.createElement("div");
+			span_action.innerHTML = element.name + " :" ;  
+			span_action.style.position = "relative";
+			span_action.style.marginTop = 10 + "px";
+			span_action.style.width = 100 + "%";
+			span_action.style.height = 20 + "%";
+			//span_action.style.border = "1px solid pink";
 			span_action.style.float = "left";
-
+			
 			var buttonDetail = document.createElement("button");
 			buttonDetail.innerHTML = "+";
-			buttonDetail.style.marginLeft = "auto";
-			buttonDetail.style.width = 5 + "%";
+			//buttonDetail.style.marginLeft = "auto";
+			buttonDetail.style.width = 10 + "%";
+			buttonDetail.style.height = 35 + "px";
+			buttonDetail.style.marginLeft = 85 + "px";
+			buttonDetail.setAttribute('class', "btn btn-light btn-sm");
 			div_action.onclick = function(){
 				if(buttonDetail.innerHTML == "+"){
-						div_action.appendChild(affichageAction(piece, element));
+						span_action.appendChild(affichageAction(piece, element));
 					buttonDetail.innerHTML = "-";
 				}else if(buttonDetail.innerHTML == "-"){
-					div_action.removeChild(div_action.lastChild);
+					span_action.removeChild(span_action.lastChild);
 					buttonDetail.innerHTML = "+";
 				}
 			}
 			//span_action.style.float = "right";
 
 			div_action.appendChild(span_action);
-			div_action.appendChild(buttonDetail);
-			listAction.appendChild(div_action);			
+			span_action.appendChild(buttonDetail);
+			//listAction.appendChild(div_action);	
+			pObj_div.appendChild(div_action);
 			console.log(element);
 		});
 	}
@@ -260,7 +363,7 @@ var affichageObjet = function(piece, objet){
 	//detail_action.appendChild(carac_div);
 
 	if(!objet.occuper)
-		detail_action.appendChild(listAction);
+	//detail_action.appendChild(listAction);
 	//detail_action.appendChild(planaction_div);
 	//detail_action.appendChild(objetlist_div);
 	pObj_div.appendChild(listAction);
@@ -272,6 +375,9 @@ var affichageAction = function(p, action){
 		action.dateDebut = new Date();
 	var div_action = document.createElement("div");
 	div_action.style.marginLeft = 10 + "%";
+	//div_action.style.marginTop = 0 + "%";
+	//div_action.style.backgroundColor = "White";
+	div_action.id = "detail_act"
 	div_action.onclick = function(event){event.stopPropagation();}
 	
 	//Date de depart
@@ -294,18 +400,20 @@ var affichageAction = function(p, action){
 	var heure_hDebut = document.createElement("input");
 	heure_hDebut.value = action.dateDebut.getHours();
 	heure_hDebut.id = "heure";
-	heure_hDebut.style.width = 5 + "%";
+	heure_hDebut.style.width = 10 + "%";
 	heure_hDebut.onchange = function(){
 		maxLength(heure_hDebut, 2);
 	}
 	var labelheure_hDebut = document.createElement("label");
-	labelheure_hDebut.innerHTML = " h ";
+	labelheure_hDebut.innerHTML = " H ";
+	//labelheure_hDebut.style.color= " white ";
 	var labelminute_hDebut = document.createElement("label");
 	labelminute_hDebut.innerHTML = " min";
 	var minute_hDebut = document.createElement("input");
 	minute_hDebut.value = action.dateDebut.getMinutes();
 	minute_hDebut.id = "minute";
-	minute_hDebut.style.width = 5 + "%";
+	minute_hDebut.style.marginLeft = 5 + "px";
+	minute_hDebut.style.width = 7 + "%";
 	minute_hDebut.onchange = function(){
 		maxLength(minute_hDebut, 2);
 	}
@@ -321,7 +429,7 @@ var affichageAction = function(p, action){
 	span_tempsExecution.innerHTML = "Temps d'execution: ";
 	var heure_tempsExecution = document.createElement("input");
 	heure_tempsExecution.value = 0;
-	heure_tempsExecution.style.width = 5 + "%";
+	heure_tempsExecution.style.width = 7 + "%";
 	heure_tempsExecution.onchange = function(){
 		maxLength(heure_tempsExecution, 3);
 	}
@@ -351,7 +459,10 @@ var affichageAction = function(p, action){
 	  var p_param1 = document.createElement("p");
 	  var input_param1 = document.createElement("input");
 	  //date_dateDebut.type = "date";
-	  input_param1.value = 0;
+	  if(!action.param1)
+	    input_param1.value = 0;
+	 else
+	    input_param1.value = action.param1;
 	  var span_param1 = document.createElement("span");
 	  span_param1.innerHTML = action.param1_name + " : ";
 	  var span_param1_unit = document.createElement("span");
@@ -369,12 +480,13 @@ var affichageAction = function(p, action){
 		button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
 		button_valider.onclick = function(){
 			let date = new Date(date_dateDebut.value);
+			
 			date.setHours(heure_hDebut.value);
 			date.setMinutes(minute_hDebut.value);
 			
 			if(action.param1_name)
 			  action.param1 = input_param1.value;
-
+input_param1
 			let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
 			lancementAction(p, action, date, temps);
 		}
@@ -437,6 +549,9 @@ function lancementAction(p,a,d, t){
 		let new_action = new Action(p, a.name);
 		new_action.dateDebut = d;
 		new_action.time = t;
+		new_action.param1_name = a.param1_name;
+		new_action.param1 = a.param1;
+		new_action.param1_unit = a.param1_unit;
 		home.actions.push(new_action);
 		alert("L'action a bien été enregistrée");
 	} else {
@@ -771,6 +886,10 @@ var affichagePiece = function(doc){
 	//TODO A FAIRE 
 	var miniplan_div = document.createElement("div");
 	miniplan_div.id = "miniplan_piece";
+	miniplan_div.style.margin = "0 auto";
+	miniplan_div.load = function(){
+	  home.etages[home.selectEtage].miniDisplay(miniplan_div, doc.name);
+	}
 	/*miniplan_div.style.float = "left";
 	miniplan_div.style.width = 40 + "%";
 	miniplan_div.style.height = 100 + "%";
@@ -801,13 +920,15 @@ var affichagePiece = function(doc){
 		buttonlight_p.innerHTML = "Allumer";
 	buttonlight_p.onclick = function(){
 		doc.light = !doc.light;
+
+		alert("La lumiere de " + doc.name + " est bien " + buttonlight_p.innerHTML + "!");
 		if(doc.light)
 			buttonlight_p.innerHTML = "Eteindre";
 		else
 			buttonlight_p.innerHTML = "Allumer";
-		alert("La lumiere de " + doc.name + " est bien " + buttonlight_p.innerHTML + "!");
 		//MAJ du plan
 		home.etages[home.selectEtage].majAffichage();
+		home.etages[home.selectEtage].miniDisplay();
 	}
 
 	light_p.appendChild(labellight_p);
@@ -862,13 +983,14 @@ var affichagePiece = function(doc){
 
 	buttonvolet_p.onclick = function(){
 		doc.volet = !doc.volet;
-		if(doc.volet)
+		alert("Les volets " + doc.name + " sont bien " + buttonvolet_p.innerHTML + "!");
+				if(doc.volet)
 			buttonvolet_p.innerHTML = "Fermer";
 		else
 			buttonvolet_p.innerHTML = "Ouvrir";
-		alert("Les volets " + doc.name + " sont bien " + buttonvolet_p.innerHTML + "!");
 		//MAJ du plan
 		home.etages[home.selectEtage].majAffichage();
+		home.etages[home.selectEtage].miniDisplay();
 	}
 
 	volet_p.appendChild(labelvolet_p);
@@ -882,6 +1004,7 @@ var affichagePiece = function(doc){
 	detail_div.appendChild(planaction_div);
 	detail_div.appendChild(listObjet(doc));
 	document.getElementById("myHome").appendChild(detail_div);
+	miniplan_div.load();
 }
 
 //Change tous les volets de la maison
@@ -896,6 +1019,7 @@ var changeAllVolet = function(b){
   else
     alert("Tous les volets de la maison sont maintenant fermé");
   home.etages[home.selectEtage].majAffichage();
+  home.etages[home.selectEtage].miniDisplay();
 }
 
 //chnage toutes les lumieres de la maison
@@ -909,7 +1033,9 @@ var changeAllLight = function(b){
     alert("Toutes les lumieres de la maison sont maintenant allumé");
   else
     alert("Toutes les lumieres de la maison sont maintenant éteintes");
+      
   home.etages[home.selectEtage].majAffichage();
+  home.etages[home.selectEtage].miniDisplay();
 }
 
 //change la temperature de la maison
@@ -920,7 +1046,10 @@ var changeAllTemp = function(temp){
     })
   });
   document.getElementById("temp_maison").innerHTML = temp + "°c";
+  document.getElementById("temp_maison").innerHTML = temp + "°c";
+  
   home.etages[home.selectEtage].majAffichage();
+  home.etages[home.selectEtage].miniDisplay();
 }
 
 //Variable globale
@@ -949,8 +1078,8 @@ datetest.setMinutes(datetest.getMinutes());
 
 var datetest2 = new Date();
 datetest2.setMinutes(datetest.getMinutes()+1);
-lancementAction(chambre, alarme, datetest, 1);
-lancementAction(chambre, alarme, datetest2, 10);
+/*lancementAction(chambre, alarme, datetest, 1);
+lancementAction(chambre, alarme, datetest2, 10);*/
 
 four.actions[0] = cuisson;
 reveil.actions[0] = alarme;
