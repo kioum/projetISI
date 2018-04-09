@@ -1,10 +1,11 @@
 var Maison = function () {
   this.selectEtage = 0;
-	this.etages = []; // les etages de la maison
+  this.etages = []; // les etages de la maison
+  this.actions = []; // les actions fait dans la maison
 }
 
 var Etage = function (name) {
-  this.name = name;
+	this.name = name;
 	this.display = document.createElement("div");
 	this.display.id = "etages";
 	this.pieces = []; // les pieces de l'etage
@@ -86,17 +87,13 @@ var Objet = function(piece, name, image) {
 	this.onOff = false; // Si l'objet est on ou off
 	this.occuper = false; // Si l'objet est occupé
 	this.actions = []; //action possible avec l'objet
-	this.actionActuel;
 }
 
 var Action = function(name){
 	this.name = name;
 	this.time = 0; // temps de l'action
 	this.dateDebut; // debut de l'action
-}
-
-Action.prototype.progression = function(){
-	return 50;
+	this.etat = 0; // 0 = Pas lancé, 1 = en cours, 2 bien fini, -1 annulé
 }
 
 //affichage des action d'un objet 
@@ -200,15 +197,17 @@ var affichageObjet = function(piece, objet){
 			buttonDetail.innerHTML = "+";
 			buttonDetail.style.marginLeft = 95 + "%";
 			buttonDetail.style.width = 5 + "%";
-			buttonDetail.onclick = function(){
+			
+			//Permet d'avoir plus de detail sur l'action
+			div_action.onclick = function(){
 				if(buttonDetail.innerHTML == "+"){
-					affichageAction(piece, objet, element, div_action);
+					affichageAction(piece, element, div_action);
 					buttonDetail.innerHTML = "-";
 				}else if(buttonDetail.innerHTML == "-"){
 					div_action.removeChild(div_action.lastChild);
 					buttonDetail.innerHTML = "+";
 				}
-		}
+			}
 			//span_action.style.float = "right";
 		
 			div_action.appendChild(span_action);
@@ -233,13 +232,17 @@ var affichageObjet = function(piece, objet){
 	parent.appendChild(detail_action);
 }
 
-var affichageAction = function(p, o, action, display){
+var affichageAction = function(p,action, display){
 	action.dateDebut = new Date();
 	var div_action = document.createElement("div");
 	div_action.style.marginLeft = 10 + "%";
+	div_action.onclick = function(event){event.stopPropagation();}
 	
+	//Date de depart
 	var p_dateDebut = document.createElement("p");
 	var date_dateDebut = document.createElement("input");
+	date_dateDebut.min = action.dateDebut.getFullYear()+"-0"+ 
+	(action.dateDebut.getMonth()+1) + "-0" + action.dateDebut.getDate();
 	date_dateDebut.type = "date";
 	date_dateDebut.value = action.dateDebut.getFullYear()+"-0"+ 
 	(action.dateDebut.getMonth()+1) + "-0" + action.dateDebut.getDate();
@@ -248,6 +251,7 @@ var affichageAction = function(p, o, action, display){
 	p_dateDebut.appendChild(span_dateDebut);
 	p_dateDebut.appendChild(date_dateDebut);
 	
+	//Heure de depart
 	var p_hDebut = document.createElement("p");
 	var span_hDebut = document.createElement("span");
 	span_hDebut.innerHTML = "Heure de debut : ";
@@ -275,20 +279,19 @@ var affichageAction = function(p, o, action, display){
 	p_hDebut.appendChild(minute_hDebut);
 	p_hDebut.appendChild(labelminute_hDebut);
 	
+	// temps de la tache 
 	var p_tempsExecution = document.createElement("p");
 	var span_tempsExecution = document.createElement("span");
 	span_tempsExecution.innerHTML = "Temps d'execution: ";
 	var heure_tempsExecution = document.createElement("input");
-	heure_tempsExecution.id = "heure";
 	heure_tempsExecution.value = 0;
 	heure_tempsExecution.style.width = 5 + "%";
 	heure_tempsExecution.onchange = function(){
-		maxLength(heure_tempsExecution, 2);
+		maxLength(heure_tempsExecution, 3);
 	}
 	var minute_tempsExecution = document.createElement("input");
 	minute_tempsExecution.style.width = 5 + "%";
-	minute_tempsExecution.id = "minute";
-	minute_tempsExecution.value = 0;
+	minute_tempsExecution.value = 1;
 	minute_tempsExecution.onchange = function(){
 		maxLength(minute_tempsExecution, 2);
 	}
@@ -307,7 +310,12 @@ var affichageAction = function(p, o, action, display){
 	var button_valider = document.createElement("button");
 	button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
 	button_valider.onclick = function(){
-		lancementAction(p, o, action, action.dateDebut);
+		let date = new Date(date_dateDebut.value);
+		date.setHours(heure_hDebut.value);
+		date.setMinutes(minute_hDebut.value);
+		
+		let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
+		lancementAction(p, action, date, temps);
 	}
 	
 	p_valider.appendChild(button_valider);
@@ -319,8 +327,8 @@ var affichageAction = function(p, o, action, display){
 	display.appendChild(div_action);
 }
 
+//Affichages de la liste des objets
 function listObjet(doc) {
-		// Liste des objets
 	var objetlist_div = document.createElement("div");
 	objetlist_div.id = "listObjet_piece";
 	objetlist_div.style.width = 100 + "%";
@@ -333,19 +341,28 @@ function listObjet(doc) {
 	return objetlist_div;
 }
 
-function lancementAction(p, o, a,d){
-	var parent = document.getElementById("detail_objet");
-	if(parent) parent.removeChild(parent.lastChild);
-	document.getElementById("detail_piece").appendChild(listObjet(p));
+// Permet de lancer une action
+function lancementAction(p,a,d, t){
+	var parent = document.getElementById("detail_piece");
+	if(parent) {
+		parent.removeChild(parent.lastChild);
+		document.getElementById("detail_piece").appendChild(listObjet(p));
+	}
 	
-	var new_action = new Action(a.name);
-	
-	o.actionActuel = new_action;
+	if (confirm("Etes-vous sur de vouloir créer une nouvelle action " + a.name + " ?")) {
+		let new_action = new Action(a.name);
+		new_action.dateDebut = d;
+		new_action.time = t;
+		home.actions.push(new_action);
+		alert("L'action a bien été enregistrée");
+	} else {
+		alert("L'action a bien été annulée");
+	}
 }
+
 //Fonction servant à limiter le nombre de caractere  dans une textarea
 function maxLength(element, max){
     value = parseInt(element.value);
-	console.log(element.id);
 	if(element.id == "heure"){
 		if(value > 24) element.value = 24;
 		if(value < 0) element.value = 0;
@@ -403,8 +420,8 @@ var affichagePage = function(doc){
 	// My TASKS
   if(doc.name == "mytasks"){
     //affiche les bon elements
-	  mytasks.style.display = "block";
-	  var enfant = mytasks.getElementsByTagName("Div");
+	mytasks.style.display = "block";
+	var enfant = mytasks.getElementsByTagName("Div");
     for (var i = 0; i < enfant.length; i++) {
       enfant[i].style.display = "block";
     }
@@ -421,6 +438,192 @@ var affichagePage = function(doc){
     }
   }
   
+}
+
+//Genere les listes des taches 
+var generateListTasks = function(){
+	var actionEnCours = document.getElementById("tachesCours");
+	var actionProg = document.getElementById("tachesProg");
+	var actionFini = document.getElementById("tachesFinies");
+	home.actions.forEach(function(a){
+		//creer l'id de l'action en question
+		var id = a.name+a.dateDebut+a.time;
+		
+		//Option d'affichage des date
+		var options = {  
+		weekday: "short", year: "numeric", month: "short",  
+		day: "numeric", hour: "2-digit", minute: "2-digit"  
+		};  
+		
+		//Changement d'etat des taches
+		var dateD = a.dateDebut;
+		var dateF = new Date(dateD.valueOf());
+		dateF.setMinutes(dateF.getMinutes() + a.time);
+		
+		if(dateD <= new Date() && dateF >= new Date() && a.etat == 0) {
+			a.etat = 1
+			if(document.getElementById(id))
+				actionProg.removeChild(document.getElementById(id));
+		};
+		
+		if(dateF < new Date() && a.etat == 1) {
+			a.etat = 2;
+			actionEnCours.removeChild(document.getElementById(id));
+		};
+		
+
+		if(!document.getElementById(id)){
+			var new_action_cours = document.createElement("li");
+			new_action_cours.id = id;
+			
+			//Affichage du titre
+			var name_span = document.createElement("span");
+			name_span.innerHTML = a.name + " : ";
+			name_span.style.width = 10 + "%";
+			name_span.style.float = "left";
+			name_span.id = id+"_name";
+				
+			var dateFin_span = document.createElement("span");
+			dateFin_span.style.marginLeft = 60 + "%";
+			dateFin_span.style.width = 40 + "%";
+			dateFin_span.style.float = "left";
+			dateFin_span.id = id+"_dateFin";
+			
+			var div_button = document.createElement("div");
+			//div_button.style.float = "left";
+			div_button.style.width = 40 + "%";		
+			div_button.style.marginLeft = 62 + "%";
+				
+			var button_modifier = document.createElement("button");
+			button_modifier.style.float = "left";
+			button_modifier.style.width = 47 + "%";
+			button_modifier.innerHTML = "Modifier";
+				
+			var button_annuler = document.createElement("button");
+			button_annuler.style.width = 47 + "%";
+			button_annuler.style.marginLeft = 50 + "%";
+			button_annuler.innerHTML = "Annuler";
+			if(a.etat == 0){ //action en cours	
+				button_modifier.onclick = function(){
+					
+				}		
+				
+				button_annuler.innerHTML = "Supprimer";
+				button_annuler.onclick = function(){
+					if(confirm("Etes-vous sur de vouloir supprimer cette tache : " + a.name)){
+						var index = home.actions.indexOf(a);
+						home.actions.splice(index, 1);
+						actionProg.removeChild(document.getElementById(id));
+					}
+				}
+				dateFin_span.innerHTML = "Commence le " + dateD.toLocaleDateString("fr-FR", options);
+			
+				new_action_cours.appendChild(name_span);
+				div_button.appendChild(button_modifier);
+				div_button.appendChild(button_annuler);
+				new_action_cours.appendChild(div_button);
+				new_action_cours.appendChild(dateFin_span);
+				actionProg.appendChild(new_action_cours);
+			}else if(a.etat == 1){ //action en cours
+				button_modifier.onclick = function(){
+					
+				}		
+				
+				button_annuler.onclick = function(){
+					if(confirm("Etes-vous sur de vouloir annuler cette tache : " + a.name)){
+						a.etat = -1;
+						actionEnCours.removeChild(document.getElementById(id));
+					}
+				}
+				
+				var progress_action = new_progess(id);
+
+				dateFin_span.innerHTML = "Termine le " + dateF.toLocaleDateString("fr-FR", options);
+				
+				new_action_cours.appendChild(name_span);
+				new_action_cours.appendChild(progress_action);
+				div_button.appendChild(button_modifier);
+				div_button.appendChild(button_annuler);
+				new_action_cours.appendChild(div_button);
+				new_action_cours.appendChild(dateFin_span);
+				actionEnCours.appendChild(new_action_cours);
+			}else {
+				button_annuler.innerHTML = "Supprimer";
+				button_annuler.onclick = function(){
+					if(confirm("Etes-vous sur de vouloir supprimer cette tache : " + a.name)){
+						var index = home.actions.indexOf(a);
+						home.actions.splice(index, 1);
+						actionFini.removeChild(document.getElementById(id));
+					}
+				}
+				var dateFin_span = document.createElement("span");
+
+				dateFin_span.innerHTML = "Tache fini le " + dateF.toLocaleDateString("fr-FR", options);
+				
+				var status_span = document.createElement("span");
+				status_span.innerHTML = "Status : ";
+				if(a.etat == 2) status_span.innerHTML += "Terminée";
+				else if (a.etat == -1) status_span.innerHTML += "Annulée";
+				status_span.style.marginLeft = 80 + "%";
+				status_span.style.width = 20 + "%";
+				status_span.id = id+"_dateFin";
+			
+				new_action_cours.appendChild(name_span);
+				new_action_cours.appendChild(dateFin_span);
+				div_button.appendChild(button_annuler);
+				new_action_cours.appendChild(div_button);
+				new_action_cours.appendChild(status_span);
+				actionFini.appendChild(new_action_cours);
+			}
+		}else{
+			if(a.etat == 1){
+				let progressbar = document.getElementById(id+"_myBar");
+				let pourcent = calculeProgress(dateD, dateF).toFixed(0);
+				progressbar.style.width = pourcent + "%";
+				progressbar.innerHTML = pourcent + "%";
+			}
+		}
+	});
+}
+
+//Calcule la difference entre deux dates
+function diffdate(d1,d2,u){
+	div=1;
+	switch(u){
+	case 's': div=1000;
+				 break;
+	case 'm': div=1000*60
+				 break;
+	case 'h': div=1000*60*60
+				 break;
+	case 'd': div=1000*60*60*24
+				 break;
+}
+ 
+var Diff = d2.getTime() - d1.getTime();
+	return Math.ceil((Diff/div))
+}
+
+//Calcule le pourcentage de fin
+var calculeProgress = function(db, df){
+	return (diffdate(db,new Date(),'s')/diffdate(db,df,'s'))*100;
+}
+//Fonction de creation de progressBar
+var new_progess = function(name){
+	var myProgress = document.createElement("div");
+	myProgress.id = name + "_myProgress";
+	myProgress.style.width = 50 + "%";
+	myProgress.style.color = "grey";
+	myProgress.style.marginLeft = 10 + "%";
+	myProgress.style.border = "1px solid black";
+	var myBar = document.createElement("div");
+	myBar.id = name + "_myBar";
+	myBar.style.width = 0 + "px";
+	myBar.style.height = 30 + "px";
+    myBar.style.background = "green";
+	myBar.innerHTML = 0 + "%";
+	myProgress.appendChild(myBar);
+	return myProgress;
 }
 
 //creation automatique et affiche la div des pieces.
@@ -566,7 +769,8 @@ var affichagePiece = function(doc){
   document.getElementById("myHome").appendChild(detail_div);
 }
 
-
+//permet de mettre a jour les taches
+setInterval(generateListTasks, 1000);
 
 // Variable globale
 var pagePrecedent = "pageAccueil";
@@ -578,7 +782,7 @@ var etage1 = new Etage("1er Etage");
 var etage2 = new Etage("2eme Etage");
 
 var chambre = new Piece("Chambre", 0,0,210,100);
-var wc = new Piece("wc", 110,110,100,100);
+var wc = new Piece("Toilette", 110,110,100,100);
 var cuisine = new Piece("cuisine", 0,110,100,100);
 var salleDeBains = new Piece("salle de bain", 50, 105, 100, 75);
 
@@ -587,6 +791,14 @@ var reveil = new Objet(chambre, "Reveil", "reveil.png");
 
 var cuisson = new Action("Cuisson");
 var alarme = new Action("Alarme");
+
+var datetest = new Date();
+datetest.setMinutes(datetest.getMinutes());
+
+var datetest2 = new Date();
+datetest2.setMinutes(datetest.getMinutes()+1);
+lancementAction(chambre, alarme, datetest, 1);
+lancementAction(chambre, alarme, datetest2, 10);
 
 four.actions[0] = cuisson;
 reveil.actions[0] = alarme;
