@@ -41,7 +41,6 @@ Etage.prototype.miniDisplay = function(parent, name){
 	  }
 	  if(parent){
 	    var new_div = document.createElement("div");
-
 	    new_div.id = "mini_"+element.name+etage.name;
 	    new_div.onclick = element.display.onclick;
 	    var x_mini = ((element.x)/etage.display.offsetWidth) * parent.offsetWidth;
@@ -56,28 +55,30 @@ Etage.prototype.miniDisplay = function(parent, name){
 	    new_div.style.height = (parent.offsetHeight/etage.display.offsetWidth) * element.height + "px";
 
 		var span_titre = document.createElement("span");
-		span_titre.id = "mdrlol"+element.name;
+		span_titre.id = "mini_span"+element.name;
 		span_titre.innerHTML = element.name;
-		span_titre.style.color = "white";
-		if(!document.getElementById("mdrlol"+element.name))
+		//
+		if(element.light) span_titre.style.color = "black";
+		else span_titre.style.color = "white";
+		if(!document.getElementById("mini_span"+element.name))
 			new_div.appendChild(span_titre);
 		}
 	
 		if (document.getElementById("mini_"+element.name+etage.name) || parent)
-		if(element.light){
-		  new_div.style.background = "yellow";
-		  if (document.getElementById("span_mouseover"+element.name))
-		    document.getElementById("span_mouseover"+element.name).style.color = "black";
-		  if (document.getElementById("mdrlol"+element.name))
-		    document.getElementById("mdrlol"+element.name).style.color = "black";
-		}
-		else{
-			new_div.style.background = "black";
-			if (document.getElementById("span_mouseover"+element.name))
-				document.getElementById("span_mouseover"+element.name).style.color = "white";
-			if (document.getElementById("mdrlol"+element.name))
-				document.getElementById("mdrlol"+element.name).style.color = "white";
-		}
+			if(element.light){
+				new_div.style.background = "yellow";
+				if (document.getElementById("span_mouseover"+element.name))
+					document.getElementById("span_mouseover"+element.name).style.color = "black";
+				if (document.getElementById("mini_span"+element.name))
+					document.getElementById("mini_span"+element.name).style.color = "black";
+			}
+			else{
+				new_div.style.background = "black";
+				if (document.getElementById("span_mouseover"+element.name))
+					document.getElementById("span_mouseover"+element.name).style.color = "white";
+				if (document.getElementById("mini_span"+element.name))
+					document.getElementById("mini_span"+element.name).style.color = "white";
+			}
 		  
 	if(parent)
 		parent.appendChild(new_div);
@@ -145,15 +146,15 @@ Piece.prototype.affichage = function(e){
 	
 	if(this.light){
 	  this.display.style.backgroundColor = "yellow";
-	  if (document.getElementById("mdrlol"+this.name))
-		document.getElementById("mdrlol"+this.name).style.color = "black";
+	  if (document.getElementById("mini_span"+this.name))
+		document.getElementById("mini_span"+this.name).style.color = "black";
 	  if (document.getElementById("span_mouseover"+this.name))
 		document.getElementById("span_mouseover"+this.name).style.color = "black";
 	}
 	else{
 	  this.display.style.backgroundColor = "black";
-	  if (document.getElementById("mdrlol"+this.name))
-		document.getElementById("mdrlol"+this.name).style.color = "white";
+	  if (document.getElementById("mini_span"+this.name))
+		document.getElementById("mini_span"+this.name).style.color = "white";
 	  if (document.getElementById("span_mouseover"+this.name))
 		document.getElementById("span_mouseover"+this.name).style.color = "white";
 	}		
@@ -946,6 +947,7 @@ var affichagePiece = function(doc){
 	var labeltempAff_p = document.createElement("label");
 	labeltempAff_p.style.float = "left";
 	labeltempAff_p.style.width = 12 + "%";
+	labeltempAff_p.id = "slider_temp";
 	labeltempAff_p.innerHTML = " " + doc.temp + "°C";
 	var slidertemp_p = document.createElement("input");
 	slidertemp_p.type = "range";
@@ -1046,7 +1048,7 @@ var changeAllTemp = function(temp){
     })
   });
   document.getElementById("temp_maison").innerHTML = temp + "°c";
-  document.getElementById("temp_maison").innerHTML = temp + "°c";
+  document.getElementById("slider_temp").innerHTML = temp + "°c";
   
   home.etages[home.selectEtage].majAffichage();
   home.etages[home.selectEtage].miniDisplay();
