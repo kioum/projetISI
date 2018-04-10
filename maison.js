@@ -165,6 +165,7 @@ Piece.prototype.affichage = function(e){
 
 var Objet = function(piece, name, image) {
 	var objet = this;
+	this.piece = piece;
 	this.name = name;
 	this.image = image;
 	// l'affichage dans la liste des objets
@@ -184,14 +185,14 @@ var Objet = function(piece, name, image) {
 	}
 	
 	this.display.appendChild(span);
-	this.onOff = false; // Si l'objet est on ou off
 	this.occuper = false; // Si l'objet est occupé
 	this.actions = []; //action possible avec l'objet
 }
 
-var Action = function(piece, name, param, param_unit){
+var Action = function(obj, name, param, param_unit){
 	this.name = name;
-	this.piece = piece.name;
+	this.objet = obj;
+	this.piece = obj.piece.name;
 	this.time = 0; // temps de l'action
 	this.dateDebut; // debut de l'action
 	this.etat = 0; // 0 = Pas lancé, 1 = en cours, 2 bien fini, -1 annulé
@@ -264,42 +265,6 @@ var affichageObjet = function(piece, objet){
 	//carac_div.style.border = "1px solid blue";
 	pObj_div.appendChild(carac_div);
 
-	//ON/OFF
-	var onOff_p = document.createElement("p");
-	onOff_p.style.width = 100 + "%";
-	onOff_p.style.height = 10 + "%";
-
-	//label
-	var onOfflabel_p = document.createElement("label");
-	onOfflabel_p.style.float = "left";
-	onOfflabel_p.style.width = 40 + "%";
-	onOfflabel_p.innerHTML = "Allumer :";
-	onOff_p.appendChild(onOfflabel_p);
-
-	//button
-	var buttononOff_p = document.createElement("button");
-	buttononOff_p.style.float = "left";
-	buttononOff_p.style.width = 40 + "%";
-	buttononOff_p.setAttribute('class', "btn btn-light btn-sm");
-	if(objet.onOff)
-		buttononOff_p.innerHTML = "ON";
-	else
-		buttononOff_p.innerHTML = "OFF";
-	buttononOff_p.onclick = function(){
-		objet.onOff = !objet.onOff;
-
-		alert("Votre " + objet.name + " est bien " + buttononOff_p.innerHTML + "!");	
-		if(objet.onOff)
-			buttononOff_p.innerHTML = "ON";
-		else
-			buttononOff_p.innerHTML = "OFF";
-		//MAJ du plan
-		home.etages[home.selectEtage].majAffichage();
-		home.etages[home.selectEtage].miniDisplay();
-	}
-	onOff_p.appendChild(buttononOff_p);	
-	pObj_div.appendChild(onOff_p);
-
 	//Statut
 	var statut_p = document.createElement("p");
 	statut_p.style.width = 100 + "%";
@@ -344,7 +309,7 @@ var affichageObjet = function(piece, objet){
 			buttonDetail.setAttribute('class', "btn btn-light btn-sm");
 			div_action.onclick = function(){
 				if(buttonDetail.innerHTML == "+"){
-						span_action.appendChild(affichageAction(piece, element));
+					span_action.appendChild(affichageAction(objet, element));
 					buttonDetail.innerHTML = "-";
 				}else if(buttonDetail.innerHTML == "-"){
 					span_action.removeChild(span_action.lastChild);
@@ -357,7 +322,6 @@ var affichageObjet = function(piece, objet){
 			span_action.appendChild(buttonDetail);
 			//listAction.appendChild(div_action);	
 			pObj_div.appendChild(div_action);
-			console.log(element);
 		});
 	}
 	//caracImage_div.appendChild(image_div);
@@ -368,10 +332,26 @@ var affichageObjet = function(piece, objet){
 	//detail_action.appendChild(planaction_div);
 	//detail_action.appendChild(objetlist_div);
 	pObj_div.appendChild(listAction);
+	
+	//creation du footer pour afficher les taches
+	var footer_div = document.createElement("div");
+	footer_div.id = "footer_objet";
+	footer_div.style.position = "absolute";
+	footer_div.style.bottom = 0;
+	footer_div.style.border = "1px black solid";
+	var tacheCoursObjet_span = document.createElement("span");
+	tacheCoursObjet_span.innerHTML = " tache(s) en cours";
+	var tacheProgrammeObjet_span = document.createElement("span");
+	tacheProgrammeObjet_span.innerHTML  = " tache(s) en programmes";
+	footer_div.appendChild(tacheCoursObjet_span);
+	footer_div.appendChild(tacheProgrammeObjet_span);
+	
+	detail_action.appendChild(footer_div);
+	
 	parent.appendChild(detail_action);
 }
 
-var affichageAction = function(p, action){
+var affichageAction = function(obj, action){
 	if(!action.dateDebut)
 		action.dateDebut = new Date();
 	var div_action = document.createElement("div");
@@ -382,13 +362,17 @@ var affichageAction = function(p, action){
 	div_action.onclick = function(event){event.stopPropagation();}
 	
 	//Date de depart
+	var date_string = action.dateDebut.getFullYear() + "-";
+	if ((action.dateDebut.getMonth()+1)<10) date_string += "0";
+		date_string += (action.dateDebut.getMonth()+1) + "-";
+	if (action.dateDebut.getDate()<10) date_string += "0";
+		date_string += action.dateDebut.getDate();
+	
 	var p_dateDebut = document.createElement("p");
 	var date_dateDebut = document.createElement("input");
-	date_dateDebut.min = action.dateDebut.getFullYear()+"-0"+ 
-	(action.dateDebut.getMonth()+1) + "-0" + action.dateDebut.getDate();
+	date_dateDebut.min = date_string;
 	date_dateDebut.type = "date";
-	date_dateDebut.value = action.dateDebut.getFullYear()+"-0"+ 
-	(action.dateDebut.getMonth()+1) + "-0" + action.dateDebut.getDate();
+	date_dateDebut.value = date_string;
 	var span_dateDebut = document.createElement("span");
 	span_dateDebut.innerHTML = "Date de debut : ";
 	p_dateDebut.appendChild(span_dateDebut);
@@ -436,7 +420,7 @@ var affichageAction = function(p, action){
 	}
 	var minute_tempsExecution = document.createElement("input");
 	minute_tempsExecution.style.width = 5 + "%";
-	if(p)
+	if(obj)
 		minute_tempsExecution.value = 1;
 	else
 		minute_tempsExecution.value = action.time;
@@ -477,7 +461,7 @@ var affichageAction = function(p, action){
 	
 	var p_valider = document.createElement("p");
 	var button_valider = document.createElement("button");
-	if(p){
+	if(obj){
 		button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
 		button_valider.onclick = function(){
 			let date = new Date(date_dateDebut.value);
@@ -487,9 +471,9 @@ var affichageAction = function(p, action){
 			
 			if(action.param1_name)
 			  action.param1 = input_param1.value;
-input_param1
+		  
 			let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
-			lancementAction(p, action, date, temps);
+			lancementAction(obj, action, date, temps);
 		}
 	}else {
 		button_valider.innerHTML = "Modifier l'action : '" + action.name + "'";
@@ -539,15 +523,16 @@ function listObjet(doc) {
 }
 
 // Permet de lancer une action
-function lancementAction(p,a,d, t){
+function lancementAction(obj,a,d, t){
 	var parent = document.getElementById("detail_piece");
 	if(parent) {
 		parent.removeChild(parent.lastChild);
-		document.getElementById("detail_piece").appendChild(listObjet(p));
+		document.getElementById("detail_piece").appendChild(listObjet(obj.piece));
 	}
 	
 	if (confirm("Etes-vous sur de vouloir créer une nouvelle action " + a.name + " ?")) {
-		let new_action = new Action(p, a.name);
+		let new_action = new Action(obj, a.name);
+		
 		new_action.dateDebut = d;
 		new_action.time = t;
 		new_action.param1_name = a.param1_name;
@@ -563,7 +548,6 @@ function lancementAction(p,a,d, t){
 //Fonction servant à limiter le nombre de caractere  dans une textarea
 function maxLength(element, max){
 	value = parseInt(element.value);
-	console.log(element.id);
 	if(element.id == "heure"){
 		if(value > 24) element.value = 24;
 		if(value < 0) element.value = 0;
@@ -1056,49 +1040,3 @@ var changeAllTemp = function(temp){
 
 //Variable globale
 var pagePrecedent = "pageAccueil";
-
-//Simule la recuperation des données de bases de la maison
-var home = new Maison();
-
-var etage1 = new Etage("1er Etage");
-var etage2 = new Etage("2eme Etage");
-
-var chambre = new Piece("Chambre", 0,0,210,100);
-var wc = new Piece("Toilettes", 110,110,100,100);
-var cuisine = new Piece("Cuisine", 0,110,100,100);
-var salleDeBains = new Piece("Salle de bain", 50, 105, 100, 75);
-
-var four = new Objet(cuisine, "Four", "four.png");
-var reveil = new Objet(chambre, "Reveil", "reveil.png");
-var frigo = new Objet(cuisine, "Frigo", "Icone/fridge.png");
-
-var cuisson = new Action(cuisine, "Cuisson", "degree", "°C");
-var alarme = new Action(chambre, "Alarme");
-
-var datetest = new Date();
-datetest.setMinutes(datetest.getMinutes());
-
-var datetest2 = new Date();
-datetest2.setMinutes(datetest.getMinutes()+1);
-/*lancementAction(chambre, alarme, datetest, 1);
-lancementAction(chambre, alarme, datetest2, 10);*/
-
-four.actions[0] = cuisson;
-reveil.actions[0] = alarme;
-
-chambre.objets[0] = reveil;
-
-cuisine.objets[0] = four;
-
-etage1.pieces[0] = chambre;
-etage1.pieces[1] = wc;
-etage1.pieces[2] = cuisine;
-
-etage2.pieces[0] = chambre;
-etage2.pieces[1] = salleDeBains;
-
-home.etages[0] = etage1;
-home.etages[1] = etage2;
-
-//permet de mettre a jour les taches toutes les secondes
-setInterval(generateListTasks, 1000);
