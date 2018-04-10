@@ -339,12 +339,23 @@ var affichageObjet = function(piece, objet){
 	footer_div.style.position = "absolute";
 	footer_div.style.bottom = 0;
 	footer_div.style.border = "1px black solid";
+	footer_div.style.width = "100%";
+	
 	var tacheCoursObjet_span = document.createElement("span");
-	tacheCoursObjet_span.innerHTML = " tache(s) en cours";
+	tacheCoursObjet_span.innerHTML  = obtenirTacheObjet(objet, 1);
+	tacheCoursObjet_span.innerHTML += " tache(s) en cours";
+	
 	var tacheProgrammeObjet_span = document.createElement("span");
-	tacheProgrammeObjet_span.innerHTML  = " tache(s) en programmes";
+	tacheProgrammeObjet_span.innerHTML  = obtenirTacheObjet(objet, 0);
+	tacheProgrammeObjet_span.innerHTML  += " tache(s) programmée(s)";
+	
+	var tacheFiniesObjet_span = document.createElement("span");
+	tacheFiniesObjet_span.innerHTML  = obtenirTacheObjet(objet, 2);
+	tacheFiniesObjet_span.innerHTML  += " tache(s) finie(s)";
+	
 	footer_div.appendChild(tacheCoursObjet_span);
 	footer_div.appendChild(tacheProgrammeObjet_span);
+	footer_div.appendChild(tacheFiniesObjet_span);
 	
 	detail_action.appendChild(footer_div);
 	
@@ -1036,6 +1047,17 @@ var changeAllTemp = function(temp){
   
   home.etages[home.selectEtage].majAffichage();
   home.etages[home.selectEtage].miniDisplay();
+}
+
+//On obtient les taches d'un objet
+var obtenirTacheObjet = function(objet, etat){
+	let cpt = 0;
+	home.actions.forEach(function(a){
+		if((a.objet == objet) && a.etat == etat){
+			cpt++;
+		}
+	});
+	return cpt;
 }
 
 //Variable globale
