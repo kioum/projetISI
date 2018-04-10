@@ -342,16 +342,25 @@ var affichageObjet = function(piece, objet){
 	footer_div.style.width = "100%";
 	
 	var tacheCoursObjet_span = document.createElement("span");
-	tacheCoursObjet_span.innerHTML  = obtenirTacheObjet(objet, 1);
-	tacheCoursObjet_span.innerHTML += " tache(s) en cours";
+	tacheCoursObjet_span.id = "tacheCours_span";
+	setInterval((function(){
+		tacheCoursObjet_span.innerHTML  = obtenirTacheObjet(objet, 1);
+		tacheCoursObjet_span.innerHTML += " tache(s) en cours";
+	}), 1000);
 	
 	var tacheProgrammeObjet_span = document.createElement("span");
-	tacheProgrammeObjet_span.innerHTML  = obtenirTacheObjet(objet, 0);
-	tacheProgrammeObjet_span.innerHTML  += " tache(s) programmée(s)";
+	tacheProgrammeObjet_span.id = "tacheProg_span";
+	setInterval((function(){
+		tacheProgrammeObjet_span.innerHTML  = obtenirTacheObjet(objet, 0);
+		tacheProgrammeObjet_span.innerHTML  += " tache(s) programmée(s)";
+	}), 1000);
 	
 	var tacheFiniesObjet_span = document.createElement("span");
-	tacheFiniesObjet_span.innerHTML  = obtenirTacheObjet(objet, 2);
-	tacheFiniesObjet_span.innerHTML  += " tache(s) finie(s)";
+	tacheFiniesObjet_span.id = "tacheFinie_span";
+	setInterval((function(){
+		tacheFiniesObjet_span.innerHTML  = parseInt(obtenirTacheObjet(objet, 2) + obtenirTacheObjet(objet, -1));
+		tacheFiniesObjet_span.innerHTML  += " tache(s) finie(s)";
+	}), 1000);
 	
 	footer_div.appendChild(tacheCoursObjet_span);
 	footer_div.appendChild(tacheProgrammeObjet_span);
@@ -796,6 +805,7 @@ var generateListTasks = function(){
 			}
 		}
 	});
+	
 }
 
 
