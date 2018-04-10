@@ -1099,5 +1099,14 @@ var obtenirTacheObjet = function(objet, etat){
 	return cpt;
 }
 
+var hide_paramGen = function(){
+	let gen = document.getElementById("infoGlobale");
+	if(gen){
+		if (gen.style.display == "none")
+			gen.style.display = "block";
+		else if (gen.style.display == "block")
+			gen.style.display = "none";
+	}	
+}
 //Variable globale
 var pagePrecedent = "pageAccueil";
