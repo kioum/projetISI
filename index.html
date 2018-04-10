@@ -2,6 +2,7 @@
 <head>
 <title>My Smart Home</title>
 <script type="text/javascript" src="maison.js"></script>
+<script type="text/javascript" src="data.js"></script>
 <link rel="stylesheet" href="bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="styletasks.css">
@@ -41,8 +42,8 @@
 		<div id="choixEtage" class="text-center"></div>
 
 		<div id="paramGen">
-			<button name="mytasks" class="btn btn-primary" id="bParam"
-				onclick="affichagePage(this)" data-toggle="tooltip"
+			<button name="hide_div" class="btn btn-primary" id="bParam"
+				onclick="hide_paramGen()" data-toggle="tooltip"
 				data-placement="auto top" title="Param?tres G?n?raux" >
 				<img src="Icone/try3.png" alt="Preferences" /> <br />
 			</button>
@@ -50,15 +51,16 @@
 
 		<div id="infoGlobale">
 		  <!--  <span id = "titreP">Parametres de la maison :</span>-->
-	      <div id = "volets"><span> Tous les volets</span><button id="vOuvert" class="btn btn-primary btn-sm" onclick="changeAllVolet(true)">Ouvrir</button><button id="vFermer" class="btn btn-primary btn-sm" onclick="changeAllVolet(false)">Fermer</button></div>
-	      <div id = "lumieres"><span> Toutes les lumieres</span><button id="lOuvert" class="btn btn-primary btn-sm" onclick="changeAllLight(true)">Allumer</button><button id="lFermer" class="btn btn-primary btn-sm" onclick="changeAllLight(false)">Eteindre</button></div>
-	      <div id = "temperature"><span>Changer température : </span><input type="range" value=23 min=0 max=40 onchange="changeAllTemp(this.value)"><span id="temp_maison">23°c</span></div> 
+		  
+	      <div id = "volets"><span><u>Tous les volets :</u> </span><button id="vOuvert" class="btn btn-primary btn-sm" onclick="changeAllVolet(true)">Ouvrir</button><button id="vFermer" class="btn btn-primary btn-sm" onclick="changeAllVolet(false)">Fermer</button></div>
+	      <div id = "lumieres"><span><u>Toutes les lumieres :</u> </span><button id="lOuvert" class="btn btn-primary btn-sm" onclick="changeAllLight(true)">Allumer</button><button id="lFermer" class="btn btn-primary btn-sm" onclick="changeAllLight(false)">Eteindre</button></div>
+	      <div id = "temperature"><span><u>Changer température :</u> </span><input id="slider" type="range" value=23 min=0 max=40 onchange="changeAllTemp(this.value)"><span id="temp_maison">23°c</span></div> 
 	    </div>
 	</div>
 
 	<div id="myTasks">
 		<ul id="menu-mytasks">
-		   <li><a href="#">Taches en cours</a>
+		   <li class="active"><a href="#">Taches en cours</a>
 			  <ul id="tachesCours">
 			  </ul>
 		   </li>
