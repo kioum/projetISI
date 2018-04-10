@@ -336,7 +336,7 @@ var affichageObjet = function(piece, objet){
 	//creation du footer pour afficher les taches
 	var footer_div = document.createElement("div");
 	footer_div.id = "footer_objet";
-	footer_div.style.position = "absolute";
+	footer_div.style.display = "inline-block";
 	footer_div.style.bottom = 0;
 	footer_div.style.border = "1px black solid";
 	footer_div.style.width = "100%";
@@ -347,6 +347,14 @@ var affichageObjet = function(piece, objet){
 		tacheCoursObjet_span.innerHTML  = obtenirTacheObjet(objet, 1);
 		tacheCoursObjet_span.innerHTML += " tache(s) en cours";
 	}), 1000);
+	tacheCoursObjet_span.onclick = function() {
+		let tmp = document.createElement("div");
+		tmp.name = "mytasks"
+		if(document.getElementById("menu-mytasks").childNodes[1].className == "")
+			document.getElementById("menu-mytasks").childNodes[1].click();
+		pagePrecedent = "myhome";
+		affichagePage(tmp);
+	}
 	
 	var tacheProgrammeObjet_span = document.createElement("span");
 	tacheProgrammeObjet_span.id = "tacheProg_span";
@@ -354,6 +362,14 @@ var affichageObjet = function(piece, objet){
 		tacheProgrammeObjet_span.innerHTML  = obtenirTacheObjet(objet, 0);
 		tacheProgrammeObjet_span.innerHTML  += " tache(s) programmée(s)";
 	}), 1000);
+	tacheProgrammeObjet_span.onclick = function() {
+		let tmp = document.createElement("div");
+		tmp.name = "mytasks"
+		if(document.getElementById("menu-mytasks").childNodes[3].className == "")
+			document.getElementById("menu-mytasks").childNodes[3].click();
+		pagePrecedent = "myhome";
+		affichagePage(tmp);
+	}
 	
 	var tacheFiniesObjet_span = document.createElement("span");
 	tacheFiniesObjet_span.id = "tacheFinie_span";
@@ -361,6 +377,14 @@ var affichageObjet = function(piece, objet){
 		tacheFiniesObjet_span.innerHTML  = parseInt(obtenirTacheObjet(objet, 2) + obtenirTacheObjet(objet, -1));
 		tacheFiniesObjet_span.innerHTML  += " tache(s) finie(s)";
 	}), 1000);
+	tacheFiniesObjet_span.onclick = function() {
+		let tmp = document.createElement("div");
+		tmp.name = "mytasks"
+		if(document.getElementById("menu-mytasks").childNodes[5].className == "")
+			document.getElementById("menu-mytasks").childNodes[5].click();
+		pagePrecedent = "myhome";
+		affichagePage(tmp);
+	}
 	
 	footer_div.appendChild(tacheCoursObjet_span);
 	footer_div.appendChild(tacheProgrammeObjet_span);
@@ -591,12 +615,18 @@ var affichagePage = function(doc){
 	mytasks.style.display = "none";
 	document.getElementById("retour").style.display = "block";
 
-  if (doc.id == "retour" && doc.name == "myhome") doc.name = "pageAccueil";
-	else if(doc.id == "retour") doc.name = pagePrecedent;
+	var name = doc.name;
+	
+	
+	if(doc.id == "bParam") pagePrecedent = "myhome";
+	else if (doc.id == "retour" && name == "myhome") {name = "pageAccueil"; console.log("ici");}
+	else if(doc.id == "retour") name = pagePrecedent;
 
+	console.log(doc.id + " " + name);
 	//MY HOME
-	if(doc.name == "myhome"){
+	if(name == "myhome"){
 		//affiche les bon elements
+		pagePrecedent = "pageAccueil";
 		myhome.style.display = "block";
 		var enfant = myhome.getElementsByTagName("div");
 		for (var i = 0; i < enfant.length; i++) {
@@ -604,7 +634,7 @@ var affichagePage = function(doc){
 		}
 
 		var choixEtage = document.getElementById("choixEtage");
-		while( choixEtage.firstChild) choixEtage.removeChild( choixEtage.firstChild);
+		while(choixEtage.firstChild) choixEtage.removeChild(choixEtage.firstChild);
 
 		//ajoute les boutons dynamiquement a choixEtage
 		var i = 0;
@@ -625,8 +655,7 @@ var affichagePage = function(doc){
 	}
 
 	// My TASKS
-	if(doc.name == "mytasks"){
-	  if(doc.id == "bParam") pagePrecedent = "myhome";
+	if(name == "mytasks"){
 		//affiche les bon elements
 		mytasks.style.display = "block";
 		var enfant = mytasks.getElementsByTagName("Div");
@@ -636,8 +665,8 @@ var affichagePage = function(doc){
 	}
 
 	// Page Accueil
-	if(doc.name == "pageAccueil"){
-	  pagePrecedent = "pageAccueil";
+	if(name == "pageAccueil"){
+	  //pagePrecedent = "pageAccueil";
 		//affiche les bon elements
 		document.getElementById("retour").style.display = "none";
 		accueil.style.display = "block";
@@ -924,6 +953,7 @@ var affichagePiece = function(doc){
 		buttonlight_p.innerHTML = "Eteindre";
 	else
 		buttonlight_p.innerHTML = "Allumer";
+	
 	buttonlight_p.onclick = function(){
 		doc.light = !doc.light;
 
