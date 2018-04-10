@@ -619,10 +619,8 @@ var affichagePage = function(doc){
 	
 	
 	if(doc.id == "bParam") pagePrecedent = "myhome";
-	else if (doc.id == "retour" && name == "myhome") {name = "pageAccueil"; console.log("ici");}
 	else if(doc.id == "retour") name = pagePrecedent;
 
-	console.log(doc.id + " " + name);
 	//MY HOME
 	if(name == "myhome"){
 		//affiche les bon elements
@@ -1083,6 +1081,7 @@ var changeAllTemp = function(temp){
     })
   });
   document.getElementById("temp_maison").innerHTML = temp + "°c";
+  if(document.getElementById("slider_temp"))
   document.getElementById("slider_temp").innerHTML = temp + "°c";
   
   home.etages[home.selectEtage].majAffichage();
