@@ -9,8 +9,8 @@ var wc = new Piece("Toilettes", 110,110,100,100);
 var cuisine = new Piece("Cuisine", 0,110,100,100);
 var salleDeBains = new Piece("Salle de bain", 50, 105, 100, 75);
 
-var four = new Objet(cuisine, "Four", "four.png");
-var reveil = new Objet(chambre, "Reveil", "reveil.png");
+var four = new Objet(cuisine, "Four", "Icone/four.png");
+var reveil = new Objet(chambre, "Reveil", "Icone/reveil.png");
 var frigo = new Objet(cuisine, "Frigo", "Icone/fridge.png");
 
 var cuisson = new Action(four, "Cuisson", "degree", "°C");

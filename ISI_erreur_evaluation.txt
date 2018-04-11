@@ -1,0 +1,40 @@
+DUVAL/COURTOUX
+
+Erreur et observation suite à l'évaluation par l'utilisateur :
+
+	/////Bug :
+
+	*Les lumières ne se mettent pas à jour correctement sur le plan 2D de la maison. 
+	=>FIXED
+
+	*La température ne se met pas à jour correctement dans les pièces si le menu de la pièce est ouvert et que l'on modifie la température globale de la maison. 
+	=>FIXED
+
+	*Les zone de texte permettant d'entrer l'heure et les minutes sont trop petites.
+	=>FIXED
+
+	/////Observation :
+
+	*Les boutons permettant d'accéder aux objets ne sont pas assez visible. 
+	=> La visibilité à été améliorée avec CSS.
+
+	*Confusion suite à l'utilisation du bouton ON/OFF pour les objets qui n'a aucun lien avec les tâches programmées. 
+	=> Suppression de la feature après discussion car elle était peut pertinente.
+	
+	*Difficulté pour l'utilisateur de retourner à la liste des objets d'un pièce après avoir programmé une tâche.
+	=>Ajout d'un bouton retour dans le menu de programmation de tâche pour retourner à la liste d'objet.
+
+	*Aucun retour sur le plan 2D pour savoir dans quelle pièce les volets sont ouverts ou fermés.
+	=>Ajout d'icône pour chaque pièce du plan montrant si les volets sont ouverts ou fermés.
+
+	*Retour après avoir programmé une tâche insuffisant.
+	=>Ajout d'une barre d'information dans le menu objet permettant d'avoir un résumé des tâches de l'objet et un bouton 'Voir' permettant d'aller au menu "MyTasks".
+
+	*Le menu d'option globale était peu visible.
+	=>Modification du bouton en bas à gauche du menu "MyHome" permetant désormais de faire apparaitre le menu des paramètres généraux. 
+	=>Affiche un pop-up 'on-hover' lorsque l'on passe dessus.
+
+
+
+
+

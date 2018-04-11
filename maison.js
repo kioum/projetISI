@@ -958,7 +958,7 @@ var generateListTasks = function(){
 				dateFin_span.innerHTML = "Tache fini le " + dateF.toLocaleDateString("fr-FR", options);
 
 				var status_span = document.createElement("span");
-				status_span.innerHTML = "Status : ";
+				status_span.innerHTML = "Statut : ";
 				if(a.etat == 2) status_span.innerHTML += "Terminée";
 				else if (a.etat == -1) status_span.innerHTML += "Annulée";
 				status_span.style.marginLeft = 80 + "%";
