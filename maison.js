@@ -34,13 +34,14 @@ Etage.prototype.majAffichage = function(){
 
 //for each pour affichage d'un etage( ensemble de piece)
 Etage.prototype.miniDisplay = function(parent, name){
-	var etage = this;
+  var etage = this;
 	this.pieces.forEach(function(element) {
 	  if (document.getElementById("mini_"+element.name+etage.name)){
 	      var new_div = document.getElementById("mini_"+element.name+etage.name);
 	  }
 	  if(parent){
 	    var new_div = document.createElement("div");
+
 	    new_div.id = "mini_"+element.name+etage.name;
 	    new_div.onclick = element.display.onclick;
 	    var x_mini = ((element.x)/etage.display.offsetWidth) * parent.offsetWidth;
@@ -54,34 +55,34 @@ Etage.prototype.miniDisplay = function(parent, name){
 	    new_div.style.width = (parent.offsetWidth/etage.display.offsetWidth) * element.width + "px";
 	    new_div.style.height = (parent.offsetHeight/etage.display.offsetWidth) * element.height + "px";
 
-		var span_titre = document.createElement("span");
-		span_titre.id = "mini_span"+element.name;
-		span_titre.innerHTML = element.name;
-		//
-		if(element.light) span_titre.style.color = "black";
-		else span_titre.style.color = "white";
-		if(!document.getElementById("mini_span"+element.name))
-			new_div.appendChild(span_titre);
-		}
+    var span_titre = document.createElement("span");
+	  span_titre.id = "mdrlol"+element.name;
+	  span_titre.innerHTML = element.name;
+	  span_titre.style.color = "White";
+	  if(!document.getElementById("mdrlol"+element.name))
+  	  new_div.appendChild(span_titre);
+	}
 	
-		if (document.getElementById("mini_"+element.name+etage.name) || parent)
-			if(element.light){
-				new_div.style.background = "yellow";
-				if (document.getElementById("span_mouseover"+element.name))
-					document.getElementById("span_mouseover"+element.name).style.color = "black";
-				if (document.getElementById("mini_span"+element.name))
-					document.getElementById("mini_span"+element.name).style.color = "black";
-			}
-			else{
-				new_div.style.background = "black";
-				if (document.getElementById("span_mouseover"+element.name))
-					document.getElementById("span_mouseover"+element.name).style.color = "white";
-				if (document.getElementById("mini_span"+element.name))
-					document.getElementById("mini_span"+element.name).style.color = "white";
-			}
+	
+	
+	if (document.getElementById("mini_"+element.name+etage.name) || parent)
+	  if(element.light){
+		  new_div.style.background = "yellow";
+		  if (document.getElementById("span_mouseover"))
+		    document.getElementById("span_mouseover").style.color = "black";
+		  if (document.getElementById("mdrlol"+this.name))
+		    document.getElementById("mdrlol"+element.name).style.color = "black";
+	  }
+	  else{
+	    new_div.style.background = "black";
+	    if (document.getElementById("span_mouseover"))
+	      document.getElementById("span_mouseover").style.color = "white";
+	    if (document.getElementById("mdrlol"+this.name))
+	      document.getElementById("mdrlol"+element.name).style.color = "white";
+	  }
 		  
-	if(parent)
-		parent.appendChild(new_div);
+		if(parent)
+	    parent.appendChild(new_div);
 	});
 }
 
@@ -101,24 +102,25 @@ var Piece = function (name, x, y, w, h) {
 		affichagePiece(piece);
 	}
 	var span_titre = document.createElement("span");
-	span_titre.id = "span_mouseover" +name;
-	span_titre.innerHTML = name;
+	span_titre.id = "span_mouseover";
 	span_titre.innerHTML = name;
 	span_titre.style.color = "White";
+	this.display.appendChild(span_titre);
 	  	
-	this.display.onmouseover = function(){	 
-		span_titre.style.color = "black";
-		piece.display.style.background = "white";
+	this.display.onmouseover = function(){
+	 
+	 span_titre.style.color = "black";
+	 piece.display.style.background = "white";
+
 	}
-	
 	this.display.onmouseout = function(){
 	  if(piece.light){
-		piece.display.style.backgroundColor = "yellow";
-		span_titre.style.color = "black";
+	  piece.display.style.backgroundColor = "yellow";
+	  span_titre.style.color = "black";
 	  }
 	  else {
-		 piece.display.style.backgroundColor = "black";
-		 span_titre.style.color = "white";
+		  piece.display.style.backgroundColor = "black";
+		  span_titre.style.color = "white";
 	  }
 	}
 	  
@@ -126,8 +128,6 @@ var Piece = function (name, x, y, w, h) {
 	this.light = false; // si les lumieres sont allumees
 	this.temp = 23; // temperature de la piece
 	this.volet = false; // si les volets sont ouvert ou fermer
-	
-	this.display.appendChild(span_titre);
 }
 
 Piece.prototype.affichage = function(e){
@@ -146,18 +146,19 @@ Piece.prototype.affichage = function(e){
 	
 	if(this.light){
 	  this.display.style.backgroundColor = "yellow";
-	  if (document.getElementById("mini_span"+this.name))
-		document.getElementById("mini_span"+this.name).style.color = "black";
-	  if (document.getElementById("span_mouseover"+this.name))
-		document.getElementById("span_mouseover"+this.name).style.color = "black";
+	  if (document.getElementById("mdrlol"+this.name))
+	  document.getElementById("mdrlol"+this.name).style.color = "black";
+	  if (document.getElementById("span_mouseover"))
+	  document.getElementById("span_mouseover").style.color = "black";
 	}
 	else{
 	  this.display.style.backgroundColor = "black";
-	  if (document.getElementById("mini_span"+this.name))
-		document.getElementById("mini_span"+this.name).style.color = "white";
-	  if (document.getElementById("span_mouseover"+this.name))
-		document.getElementById("span_mouseover"+this.name).style.color = "white";
-	}		
+	  if (document.getElementById("mdrlol"+this.name))
+	  document.getElementById("mdrlol"+this.name).style.color = "white";
+	  if (document.getElementById("span_mouseover"))
+	  document.getElementById("span_mouseover").style.color = "white";
+	}
+		
 		
 	if(e)
 	  e.display.appendChild(this.display);
@@ -165,7 +166,6 @@ Piece.prototype.affichage = function(e){
 
 var Objet = function(piece, name, image) {
 	var objet = this;
-	this.piece = piece;
 	this.name = name;
 	this.image = image;
 	// l'affichage dans la liste des objets
@@ -185,14 +185,14 @@ var Objet = function(piece, name, image) {
 	}
 	
 	this.display.appendChild(span);
+	this.onOff = false; // Si l'objet est on ou off
 	this.occuper = false; // Si l'objet est occupé
 	this.actions = []; //action possible avec l'objet
 }
 
-var Action = function(obj, name, param, param_unit){
+var Action = function(piece, name, param, param_unit){
 	this.name = name;
-	this.objet = obj;
-	this.piece = obj.piece.name;
+	this.piece = piece.name;
 	this.time = 0; // temps de l'action
 	this.dateDebut; // debut de l'action
 	this.etat = 0; // 0 = Pas lancé, 1 = en cours, 2 bien fini, -1 annulé
@@ -265,6 +265,42 @@ var affichageObjet = function(piece, objet){
 	//carac_div.style.border = "1px solid blue";
 	pObj_div.appendChild(carac_div);
 
+	//ON/OFF
+	var onOff_p = document.createElement("p");
+	onOff_p.style.width = 100 + "%";
+	onOff_p.style.height = 10 + "%";
+
+	//label
+	var onOfflabel_p = document.createElement("label");
+	onOfflabel_p.style.float = "left";
+	onOfflabel_p.style.width = 40 + "%";
+	onOfflabel_p.innerHTML = "Allumer :";
+	onOff_p.appendChild(onOfflabel_p);
+
+	//button
+	var buttononOff_p = document.createElement("button");
+	buttononOff_p.style.float = "left";
+	buttononOff_p.style.width = 40 + "%";
+	buttononOff_p.setAttribute('class', "btn btn-light btn-sm");
+	if(objet.onOff)
+		buttononOff_p.innerHTML = "ON";
+	else
+		buttononOff_p.innerHTML = "OFF";
+	buttononOff_p.onclick = function(){
+		objet.onOff = !objet.onOff;
+
+		alert("Votre " + objet.name + " est bien " + buttononOff_p.innerHTML + "!");	
+		if(objet.onOff)
+			buttononOff_p.innerHTML = "ON";
+		else
+			buttononOff_p.innerHTML = "OFF";
+		//MAJ du plan
+		home.etages[home.selectEtage].miniDisplay();
+		home.etages[home.selectEtage].majAffichage();
+	}
+	onOff_p.appendChild(buttononOff_p);	
+	pObj_div.appendChild(onOff_p);
+
 	//Statut
 	var statut_p = document.createElement("p");
 	statut_p.style.width = 100 + "%";
@@ -309,7 +345,7 @@ var affichageObjet = function(piece, objet){
 			buttonDetail.setAttribute('class', "btn btn-light btn-sm");
 			div_action.onclick = function(){
 				if(buttonDetail.innerHTML == "+"){
-					span_action.appendChild(affichageAction(objet, element));
+						span_action.appendChild(affichageAction(piece, element));
 					buttonDetail.innerHTML = "-";
 				}else if(buttonDetail.innerHTML == "-"){
 					span_action.removeChild(span_action.lastChild);
@@ -322,6 +358,7 @@ var affichageObjet = function(piece, objet){
 			span_action.appendChild(buttonDetail);
 			//listAction.appendChild(div_action);	
 			pObj_div.appendChild(div_action);
+			console.log(element);
 		});
 	}
 	//caracImage_div.appendChild(image_div);
@@ -332,70 +369,10 @@ var affichageObjet = function(piece, objet){
 	//detail_action.appendChild(planaction_div);
 	//detail_action.appendChild(objetlist_div);
 	pObj_div.appendChild(listAction);
-	
-	//creation du footer pour afficher les taches
-	var footer_div = document.createElement("div");
-	footer_div.id = "footer_objet";
-	footer_div.style.display = "inline-block";
-	footer_div.style.bottom = 0;
-	footer_div.style.border = "1px black solid";
-	footer_div.style.width = "100%";
-	
-	var tacheCoursObjet_span = document.createElement("span");
-	tacheCoursObjet_span.id = "tacheCours_span";
-	setInterval((function(){
-		tacheCoursObjet_span.innerHTML  = obtenirTacheObjet(objet, 1);
-		tacheCoursObjet_span.innerHTML += " tache(s) en cours";
-	}), 1000);
-	tacheCoursObjet_span.onclick = function() {
-		let tmp = document.createElement("div");
-		tmp.name = "mytasks"
-		if(document.getElementById("menu-mytasks").childNodes[1].className == "")
-			document.getElementById("menu-mytasks").childNodes[1].click();
-		pagePrecedent = "myhome";
-		affichagePage(tmp);
-	}
-	
-	var tacheProgrammeObjet_span = document.createElement("span");
-	tacheProgrammeObjet_span.id = "tacheProg_span";
-	setInterval((function(){
-		tacheProgrammeObjet_span.innerHTML  = obtenirTacheObjet(objet, 0);
-		tacheProgrammeObjet_span.innerHTML  += " tache(s) programmée(s)";
-	}), 1000);
-	tacheProgrammeObjet_span.onclick = function() {
-		let tmp = document.createElement("div");
-		tmp.name = "mytasks"
-		if(document.getElementById("menu-mytasks").childNodes[3].className == "")
-			document.getElementById("menu-mytasks").childNodes[3].click();
-		pagePrecedent = "myhome";
-		affichagePage(tmp);
-	}
-	
-	var tacheFiniesObjet_span = document.createElement("span");
-	tacheFiniesObjet_span.id = "tacheFinie_span";
-	setInterval((function(){
-		tacheFiniesObjet_span.innerHTML  = parseInt(obtenirTacheObjet(objet, 2) + obtenirTacheObjet(objet, -1));
-		tacheFiniesObjet_span.innerHTML  += " tache(s) finie(s)";
-	}), 1000);
-	tacheFiniesObjet_span.onclick = function() {
-		let tmp = document.createElement("div");
-		tmp.name = "mytasks"
-		if(document.getElementById("menu-mytasks").childNodes[5].className == "")
-			document.getElementById("menu-mytasks").childNodes[5].click();
-		pagePrecedent = "myhome";
-		affichagePage(tmp);
-	}
-	
-	footer_div.appendChild(tacheCoursObjet_span);
-	footer_div.appendChild(tacheProgrammeObjet_span);
-	footer_div.appendChild(tacheFiniesObjet_span);
-	
-	detail_action.appendChild(footer_div);
-	
 	parent.appendChild(detail_action);
 }
 
-var affichageAction = function(obj, action){
+var affichageAction = function(p, action){
 	if(!action.dateDebut)
 		action.dateDebut = new Date();
 	var div_action = document.createElement("div");
@@ -406,17 +383,13 @@ var affichageAction = function(obj, action){
 	div_action.onclick = function(event){event.stopPropagation();}
 	
 	//Date de depart
-	var date_string = action.dateDebut.getFullYear() + "-";
-	if ((action.dateDebut.getMonth()+1)<10) date_string += "0";
-		date_string += (action.dateDebut.getMonth()+1) + "-";
-	if (action.dateDebut.getDate()<10) date_string += "0";
-		date_string += action.dateDebut.getDate();
-	
 	var p_dateDebut = document.createElement("p");
 	var date_dateDebut = document.createElement("input");
-	date_dateDebut.min = date_string;
+	date_dateDebut.min = action.dateDebut.getFullYear()+"-0"+ 
+	(action.dateDebut.getMonth()+1) + "-0" + action.dateDebut.getDate();
 	date_dateDebut.type = "date";
-	date_dateDebut.value = date_string;
+	date_dateDebut.value = action.dateDebut.getFullYear()+"-0"+ 
+	(action.dateDebut.getMonth()+1) + "-0" + action.dateDebut.getDate();
 	var span_dateDebut = document.createElement("span");
 	span_dateDebut.innerHTML = "Date de debut : ";
 	p_dateDebut.appendChild(span_dateDebut);
@@ -464,7 +437,7 @@ var affichageAction = function(obj, action){
 	}
 	var minute_tempsExecution = document.createElement("input");
 	minute_tempsExecution.style.width = 5 + "%";
-	if(obj)
+	if(p)
 		minute_tempsExecution.value = 1;
 	else
 		minute_tempsExecution.value = action.time;
@@ -505,7 +478,7 @@ var affichageAction = function(obj, action){
 	
 	var p_valider = document.createElement("p");
 	var button_valider = document.createElement("button");
-	if(obj){
+	if(p){
 		button_valider.innerHTML = "Lancer l'action : '" + action.name + "'";
 		button_valider.onclick = function(){
 			let date = new Date(date_dateDebut.value);
@@ -515,9 +488,9 @@ var affichageAction = function(obj, action){
 			
 			if(action.param1_name)
 			  action.param1 = input_param1.value;
-		  
+input_param1
 			let temps = parseInt(heure_tempsExecution.value*60) + parseInt(minute_tempsExecution.value);
-			lancementAction(obj, action, date, temps);
+			lancementAction(p, action, date, temps);
 		}
 	}else {
 		button_valider.innerHTML = "Modifier l'action : '" + action.name + "'";
@@ -567,16 +540,15 @@ function listObjet(doc) {
 }
 
 // Permet de lancer une action
-function lancementAction(obj,a,d, t){
+function lancementAction(p,a,d, t){
 	var parent = document.getElementById("detail_piece");
 	if(parent) {
 		parent.removeChild(parent.lastChild);
-		document.getElementById("detail_piece").appendChild(listObjet(obj.piece));
+		document.getElementById("detail_piece").appendChild(listObjet(p));
 	}
 	
 	if (confirm("Etes-vous sur de vouloir créer une nouvelle action " + a.name + " ?")) {
-		let new_action = new Action(obj, a.name);
-		
+		let new_action = new Action(p, a.name);
 		new_action.dateDebut = d;
 		new_action.time = t;
 		new_action.param1_name = a.param1_name;
@@ -592,6 +564,7 @@ function lancementAction(obj,a,d, t){
 //Fonction servant à limiter le nombre de caractere  dans une textarea
 function maxLength(element, max){
 	value = parseInt(element.value);
+	console.log(element.id);
 	if(element.id == "heure"){
 		if(value > 24) element.value = 24;
 		if(value < 0) element.value = 0;
@@ -615,16 +588,12 @@ var affichagePage = function(doc){
 	mytasks.style.display = "none";
 	document.getElementById("retour").style.display = "block";
 
-	var name = doc.name;
-	
-	
-	if(doc.id == "bParam") pagePrecedent = "myhome";
-	else if(doc.id == "retour") name = pagePrecedent;
+  if (doc.id == "retour" && doc.name == "myhome") doc.name = "pageAccueil";
+	else if(doc.id == "retour") doc.name = pagePrecedent;
 
 	//MY HOME
-	if(name == "myhome"){
+	if(doc.name == "myhome"){
 		//affiche les bon elements
-		pagePrecedent = "pageAccueil";
 		myhome.style.display = "block";
 		var enfant = myhome.getElementsByTagName("div");
 		for (var i = 0; i < enfant.length; i++) {
@@ -632,7 +601,7 @@ var affichagePage = function(doc){
 		}
 
 		var choixEtage = document.getElementById("choixEtage");
-		while(choixEtage.firstChild) choixEtage.removeChild(choixEtage.firstChild);
+		while( choixEtage.firstChild) choixEtage.removeChild( choixEtage.firstChild);
 
 		//ajoute les boutons dynamiquement a choixEtage
 		var i = 0;
@@ -653,7 +622,8 @@ var affichagePage = function(doc){
 	}
 
 	// My TASKS
-	if(name == "mytasks"){
+	if(doc.name == "mytasks"){
+	  if(doc.id == "bParam") pagePrecedent = "myhome";
 		//affiche les bon elements
 		mytasks.style.display = "block";
 		var enfant = mytasks.getElementsByTagName("Div");
@@ -663,8 +633,8 @@ var affichagePage = function(doc){
 	}
 
 	// Page Accueil
-	if(name == "pageAccueil"){
-	  //pagePrecedent = "pageAccueil";
+	if(doc.name == "pageAccueil"){
+	  pagePrecedent = "pageAccueil";
 		//affiche les bon elements
 		document.getElementById("retour").style.display = "none";
 		accueil.style.display = "block";
@@ -832,7 +802,6 @@ var generateListTasks = function(){
 			}
 		}
 	});
-	
 }
 
 
@@ -951,7 +920,6 @@ var affichagePiece = function(doc){
 		buttonlight_p.innerHTML = "Eteindre";
 	else
 		buttonlight_p.innerHTML = "Allumer";
-	
 	buttonlight_p.onclick = function(){
 		doc.light = !doc.light;
 
@@ -961,8 +929,8 @@ var affichagePiece = function(doc){
 		else
 			buttonlight_p.innerHTML = "Allumer";
 		//MAJ du plan
-		home.etages[home.selectEtage].majAffichage();
 		home.etages[home.selectEtage].miniDisplay();
+		home.etages[home.selectEtage].majAffichage();
 	}
 
 	light_p.appendChild(labellight_p);
@@ -980,7 +948,6 @@ var affichagePiece = function(doc){
 	var labeltempAff_p = document.createElement("label");
 	labeltempAff_p.style.float = "left";
 	labeltempAff_p.style.width = 12 + "%";
-	labeltempAff_p.id = "slider_temp";
 	labeltempAff_p.innerHTML = " " + doc.temp + "°C";
 	var slidertemp_p = document.createElement("input");
 	slidertemp_p.type = "range";
@@ -1024,8 +991,8 @@ var affichagePiece = function(doc){
 		else
 			buttonvolet_p.innerHTML = "Ouvrir";
 		//MAJ du plan
-		home.etages[home.selectEtage].majAffichage();
 		home.etages[home.selectEtage].miniDisplay();
+		home.etages[home.selectEtage].majAffichage();
 	}
 
 	volet_p.appendChild(labelvolet_p);
@@ -1053,8 +1020,8 @@ var changeAllVolet = function(b){
     alert("Tous les volets de la maison sont maintenant ouvert");
   else
     alert("Tous les volets de la maison sont maintenant fermé");
+    home.etages[home.selectEtage].miniDisplay();
   home.etages[home.selectEtage].majAffichage();
-  home.etages[home.selectEtage].miniDisplay();
 }
 
 //chnage toutes les lumieres de la maison
@@ -1068,9 +1035,8 @@ var changeAllLight = function(b){
     alert("Toutes les lumieres de la maison sont maintenant allumé");
   else
     alert("Toutes les lumieres de la maison sont maintenant éteintes");
-      
+    home.etages[home.selectEtage].miniDisplay();
   home.etages[home.selectEtage].majAffichage();
-  home.etages[home.selectEtage].miniDisplay();
 }
 
 //change la temperature de la maison
@@ -1081,32 +1047,55 @@ var changeAllTemp = function(temp){
     })
   });
   document.getElementById("temp_maison").innerHTML = temp + "°c";
-  if(document.getElementById("slider_temp"))
-  document.getElementById("slider_temp").innerHTML = temp + "°c";
-  
-  home.etages[home.selectEtage].majAffichage();
   home.etages[home.selectEtage].miniDisplay();
+  home.etages[home.selectEtage].majAffichage();
 }
 
-//On obtient les taches d'un objet
-var obtenirTacheObjet = function(objet, etat){
-	let cpt = 0;
-	home.actions.forEach(function(a){
-		if((a.objet == objet) && a.etat == etat){
-			cpt++;
-		}
-	});
-	return cpt;
-}
-
-var hide_paramGen = function(){
-	let gen = document.getElementById("infoGlobale");
-	if(gen){
-		if (gen.style.display == "none")
-			gen.style.display = "block";
-		else if (gen.style.display == "block")
-			gen.style.display = "none";
-	}	
-}
 //Variable globale
 var pagePrecedent = "pageAccueil";
+
+//Simule la recuperation des données de bases de la maison
+var home = new Maison();
+
+var etage1 = new Etage("1er Etage");
+var etage2 = new Etage("2eme Etage");
+
+var chambre = new Piece("Chambre", 0,0,210,100);
+var wc = new Piece("Toilettes", 110,110,100,100);
+var cuisine = new Piece("Cuisine", 0,110,100,100);
+var salleDeBains = new Piece("Salle de bain", 50, 105, 100, 75);
+
+var four = new Objet(cuisine, "Four", "four.png");
+var reveil = new Objet(chambre, "Reveil", "reveil.png");
+var frigo = new Objet(cuisine, "Frigo", "Icone/fridge.png");
+
+var cuisson = new Action(cuisine, "Cuisson", "degree", "°C");
+var alarme = new Action(chambre, "Alarme");
+
+var datetest = new Date();
+datetest.setMinutes(datetest.getMinutes());
+
+var datetest2 = new Date();
+datetest2.setMinutes(datetest.getMinutes()+1);
+/*lancementAction(chambre, alarme, datetest, 1);
+lancementAction(chambre, alarme, datetest2, 10);*/
+
+four.actions[0] = cuisson;
+reveil.actions[0] = alarme;
+
+chambre.objets[0] = reveil;
+
+cuisine.objets[0] = four;
+
+etage1.pieces[0] = chambre;
+etage1.pieces[1] = wc;
+etage1.pieces[2] = cuisine;
+
+etage2.pieces[0] = chambre;
+etage2.pieces[1] = salleDeBains;
+
+home.etages[0] = etage1;
+home.etages[1] = etage2;
+
+//permet de mettre a jour les taches toutes les secondes
+setInterval(generateListTasks, 1000);

@@ -2,7 +2,6 @@
 <head>
 <title>My Smart Home</title>
 <script type="text/javascript" src="maison.js"></script>
-<script type="text/javascript" src="data.js"></script>
 <link rel="stylesheet" href="bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="styletasks.css">
@@ -42,8 +41,8 @@
 		<div id="choixEtage" class="text-center"></div>
 
 		<div id="paramGen">
-			<button name="hide_div" class="btn btn-primary" id="bParam"
-				onclick="hide_paramGen()" data-toggle="tooltip"
+			<button name="mytasks" class="btn btn-primary" id="bParam"
+				onclick="affichagePage(this)" data-toggle="tooltip"
 				data-placement="auto top" title="Param?tres G?n?raux" >
 				<img src="Icone/try3.png" alt="Preferences" /> <br />
 			</button>
@@ -59,7 +58,7 @@
 
 	<div id="myTasks">
 		<ul id="menu-mytasks">
-		   <li class="active"><a href="#">Taches en cours</a>
+		   <li><a href="#">Taches en cours</a>
 			  <ul id="tachesCours">
 			  </ul>
 		   </li>
