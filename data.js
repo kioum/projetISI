@@ -14,16 +14,19 @@ var reveil = new Objet(chambre, "Reveil", "reveil.png");
 var frigo = new Objet(cuisine, "Frigo", "Icone/fridge.png");
 
 var cuisson = new Action(four, "Cuisson", "degree", "°C");
+var Degivrage = new Action(frigo, "Degivrage");
 var alarme = new Action(reveil, "Alarme");
-var radio = new Action(reveil, "radio");
+var radio = new Action(reveil, "Radio");
 
 four.actions[0] = cuisson;
+frigo.actions[0] = Degivrage;
 reveil.actions[0] = alarme;
 reveil.actions[1] = radio;
 
 chambre.objets[0] = reveil;
 
 cuisine.objets[0] = four;
+cuisine.objets[1] = frigo;
 
 etage1.pieces[0] = chambre;
 etage1.pieces[1] = wc;

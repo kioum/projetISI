@@ -270,7 +270,14 @@ var Objet = function(piece, name, image) {
 	this.display.onclick = function(){
 		affichageObjet(piece, objet);
 	}
-
+	this.display.onmouseover = function(){	 
+		this.style.backgroundColor = "grey";
+		this.style.border = "2px outset black";
+	}
+	this.display.onmouseout = function(){	 
+		this.style.backgroundColor = "White";
+		this.style.border = "2px outset grey";
+	}
 	this.display.appendChild(span);
 	this.occuper = false; // Si l'objet est occupé
 	this.actions = []; //action possible avec l'objet
@@ -696,14 +703,14 @@ function listObjet(doc) {
 		tmp.style.font= "italic bold 12px/30px Georgia, serif";
 		tmp.style.border = "2px outset grey";
 		tmp.style.borderRadius = "25px";
-		tmp.onmouseover = function(){	 
+		/*tmp.onmouseover = function(){	 
 			tmp.style.backgroundColor = "grey";
 			tmp.style.border = "2px outset black";
 		}
 		tmp.onmouseout = function(){	 
 			tmp.style.backgroundColor = "White";
 			tmp.style.border = "2px outset grey";
-		}
+		}*/
 	});
 	return objetlist_div;
 }
