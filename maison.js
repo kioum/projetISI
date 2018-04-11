@@ -66,9 +66,25 @@ Etage.prototype.miniDisplay = function(parent, name){
 			else span_titre.style.color = "white";
 			if(!document.getElementById("mini_span"+element.name))
 				new_div.appendChild(span_titre);
+				
+			//Ajout icone volets
+    	var img_volet = document.createElement("IMG");
+    	if(element.volet)
+    	  img_volet.src = "Icone/volets_ouvert.png"
+    	else
+    	  img_volet.src = "Icone/volets_fermer.png"
+    	img_volet.id = "mini_img_volet"+element.name;
+    	img_volet.style.display = "block";
+    	img_volet.style.marginLeft = "auto";
+    	img_volet.style.marginRight = "auto";
+	    img_volet.width = "20";
+	    img_volet.height = "20";
+	    
+	    if(!document.getElementById("mini_img_volet"+element.name))
+				new_div.appendChild(img_volet);
 		}
 
-		if (document.getElementById("mini_"+element.name+etage.name) || parent)
+		if (document.getElementById("mini_"+element.name+etage.name) || parent){
 			if(element.light){
 				new_div.style.background = "radial-gradient(yellow, #1898ce, #0b2027)";
 				if (document.getElementById("span_mouseover"+element.name))
@@ -77,14 +93,19 @@ Etage.prototype.miniDisplay = function(parent, name){
 					document.getElementById("mini_span"+element.name).style.color = "black";
 			}
 			else{
-				new_div.style.background = "0b2027";
+				new_div.style.background = "#0b2027";
 				//new_div.style.border = "2px outset 0b2027";				
 				if (document.getElementById("span_mouseover"+element.name))
 					document.getElementById("span_mouseover"+element.name).style.color = "white";
 				if (document.getElementById("mini_span"+element.name))
 					document.getElementById("mini_span"+element.name).style.color = "white";
 			}
-
+			if (document.getElementById("mini_img_volet"+element.name))
+			  if(element.volet){
+			    document.getElementById("mini_img_volet"+element.name).src = "Icone/volets_ouvert.png";
+			  }else 
+			    document.getElementById("mini_img_volet"+element.name).src = "Icone/volets_fermer.png";
+		}
 		if(parent)
 			parent.appendChild(new_div);
 	});
@@ -100,13 +121,25 @@ var Piece = function (name, x, y, w, h) {
 	this.display.id = name;
 	this.display.style.border = "2px outset 1898ce";
 	//this.display.innerHTML = '<img src="Icone/light.png" class="li" >';
+	
+	this.objets = []; // les objets connectees de la pieces
+	this.light = false; // si les lumieres sont allumees
+	this.temp = 23; // temperature de la piece
+	this.volet = false; // si les volets sont ouvert ou fermer
 
-	//Ajout icone ampoule/volets
-	/*var Ilight = document.createElement("IMG");
-	Ilight.src = "Icone/light.png"
-	Ilight.style.visibility = "hidden";	
-	Ilight.id = "Ilight";
-	this.display.appendChild(Ilight);*/
+	//Ajout icone volets
+	var img_volet = document.createElement("IMG");
+	if(this.volet)
+	  img_volet.src = "Icone/volets_ouvert.png"
+	else
+	  img_volet.src = "Icone/volets_fermer.png"
+	img_volet.id = "img_volet"+name;
+	img_volet.style.display = "block";
+	img_volet.style.marginLeft = "auto";
+	img_volet.style.marginRight = "auto";
+	img_volet.style.marginTop = "10%";
+	img_volet.width = "32";
+	img_volet.height = "32";
 	
 
 	//Programme on click
@@ -115,12 +148,7 @@ var Piece = function (name, x, y, w, h) {
 	this.display.onclick = function(){
 		affichagePiece(piece);
 	}
-	if(piece.light){
-		piece.Ilight.style.visibility = "visible";
-	}
-	/*else {
-		piece.Ilight.style.visibility = "hidden";
-	}*/
+	
 	var span_titre = document.createElement("span");
 	span_titre.id = "span_mouseover" +name;
 	span_titre.innerHTML = name;
@@ -129,17 +157,20 @@ var Piece = function (name, x, y, w, h) {
 
 	this.display.onmouseover = function(){	 
 		if(piece.light){
-			//Ilight.style.visibility = "visible";
 			piece.display.style.background = "radial-gradient(yellow, #1898ce, white)";
 			span_titre.style.color = "black";
-			piece.display.style.border = "2px outset 1898ce";
+			piece.display.style.border = "2px outset #1898ce";
 		}
 		else {
-			//Ilight.style.visibility = "hidden";
 			span_titre.style.color = "black";
-			piece.display.style.background = "1898ce";
-			piece.display.style.border = "2px outset 0b2027";
+			piece.display.style.background = "#1898ce";
+			piece.display.style.border = "2px outset #0b2027";
 		}
+		
+		if(piece.volet)
+	    img_volet.src = "Icone/volets_ouvert.png"
+	  else
+	    img_volet.src = "Icone/volets_fermer.png"
 	}
 
 	this.display.onmouseout = function(){
@@ -147,22 +178,23 @@ var Piece = function (name, x, y, w, h) {
 			//Ilight.style.visibility = "visible";
 			piece.display.style.background = "radial-gradient(yellow, #1898ce, #0b2027)";
 			span_titre.style.color = "black";
-			piece.display.style.border = "2px outset 0b2027";
+			piece.display.style.border = "2px outset #0b2027";
 		}
 		else {
 			//Ilight.style.visibility = "hidden";
-			piece.display.style.backgroundColor = "0b2027";
-			piece.display.style.border = "2px outset 1898ce";
+			piece.display.style.backgroundColor = "#0b2027";
+			piece.display.style.border = "2px outset #1898ce";
 			span_titre.style.color = "white";	 
 		}
+		
+		if(piece.volet)
+	    img_volet.src = "Icone/volets_ouvert.png"
+	  else
+	    img_volet.src = "Icone/volets_fermer.png"
 	}
 
-	this.objets = []; // les objets connectees de la pieces
-	this.light = false; // si les lumieres sont allumees
-	this.temp = 23; // temperature de la piece
-	this.volet = false; // si les volets sont ouvert ou fermer
-
 	this.display.appendChild(span_titre);
+	this.display.appendChild(img_volet);
 }
 
 Piece.prototype.affichage = function(e){
@@ -179,29 +211,11 @@ Piece.prototype.affichage = function(e){
 	this.display.style.marginLeft = 45 + "px";
 	this.display.style.marginTop = 45 + "px";
 	var tmp = this.display.innerHTML;
-	//var I = document.getElementById("Ilight");
-	//I.style.visibility = "hidden";
-	
-	/*var light = document.createElement("IMG");
-	light.src = "Icone/light.png"
-	light.style.visibility = "hidden";		 
-	this.display.appendChild(light);*/
 	
 	if(this.light){
 		this.display.style.background = "radial-gradient(yellow, #1898ce, #0b2027)";
-		this.display.style.border = "2px outset 0b2027";
-
-		/*this.display.innerHTML += '<img src="Icone/light.png" class="li" >';
-		this.display.style.color = "Black";*/
+		this.display.style.border = "2px outset #0b2027";
 		
-
-		//this.Ilight.style.visibility = "visible";
-		//this.display.Ilight.style.visibility = "visible";	
-		
-		if (document.getElementById("mini_span"+this.name))
-			document.getElementById("mini_span"+this.name).style.color = "black";
-		if (document.getElementById("span_mouseover"+this.name))
-			document.getElementById("span_mouseover"+this.name).style.color = "black";
 		if (document.getElementById("mini_span"+this.name))
 			document.getElementById("mini_span"+this.name).style.color = "black";
 		if (document.getElementById("span_mouseover"+this.name))
@@ -213,8 +227,8 @@ Piece.prototype.affichage = function(e){
 		/*this.display.innerHTML = this.name;*/
 
 		
-		this.display.style.background = "0b2027";
-		this.display.style.border = "2px outset 1898ce";
+		this.display.style.background = "#0b2027";
+		this.display.style.border = "2px outset #1898ce";
 		this.display.style.color = "white";
 		
 		/*if(this.display.contains(light)==true)  		
@@ -225,7 +239,13 @@ Piece.prototype.affichage = function(e){
 		if (document.getElementById("span_mouseover"+this.name))
 			document.getElementById("span_mouseover"+this.name).style.color = "white";
 	}		
-
+	
+	if(document.getElementById("img_volet"+this.name))
+	  if(this.volet)
+	    document.getElementById("img_volet"+this.name).src = "Icone/volets_ouvert.png";
+    else
+	    document.getElementById("img_volet"+this.name).src = "Icone/volets_fermer.png";
+	    
 	if(e)
 		e.display.appendChild(this.display);
 }
@@ -306,7 +326,7 @@ var affichageObjet = function(piece, objet){
 	btn_return.onclick = function(){
 		if(document.getElementById("detail_objet")){
 			document.getElementById("detail_piece").removeChild(document.getElementById("detail_objet"));
-			//document.getElementById("detail_piece").addChild(document.getElementById("listObjet_piece"));
+			document.getElementById("detail_piece").appendChild(listObjet(objet.piece));
 		}	
 	};
 	titre_span.appendChild(btn_return);
@@ -429,10 +449,8 @@ var affichageObjet = function(piece, objet){
 	var footer_div = document.createElement("div");
 	footer_div.id = "footer_objet";
 	footer_div.style.display = "inline-block";
-	footer_div.style.bottom = "5px";
-	footer_div.style.border = "1px black ridge";
+	footer_div.style.border = "2px grey ridge";
 	footer_div.style.width = "100%";
-
 	footer_div.style.height = "35px";
 	footer_div.style.backgroundColor = "1f5673";
 	footer_div.style.font = "italic bold 12px/30px Georgia, serif";
@@ -440,7 +458,7 @@ var affichageObjet = function(piece, objet){
 	var tacheCoursObjet_span = document.createElement("span");
 	tacheCoursObjet_span.id = "tacheCours_span";
 	setInterval((function(){
-		tacheCoursObjet_span.innerHTML  = obtenirTacheObjet(objet, 1);
+		tacheCoursObjet_span.innerHTML  = "&emsp;"+ obtenirTacheObjet(objet, 1);
 		tacheCoursObjet_span.innerHTML += " tache(s) en cours, ";
 	}), 1000);
 	/*tacheCoursObjet_span.onclick = function() {
@@ -490,8 +508,7 @@ var affichageObjet = function(piece, objet){
 	btn_voir.onclick = function() {
 		let tmp = document.createElement("div");
 		tmp.name = "mytasks"
-			if(document.getElementById("menu-mytasks").childNodes[5].className == "")
-				document.getElementById("menu-mytasks").childNodes[5].click();
+			if(document.getElementById("menu-mytasks").childNodes[1].className == "")
 		pagePrecedent = "myhome";
 		affichagePage(tmp);
 	}
@@ -510,7 +527,7 @@ var affichageAction = function(obj, action){
 	if(!action.dateDebut)
 		action.dateDebut = new Date();
 	var div_action = document.createElement("div");
-	div_action.style.marginLeft = 10 + "%";
+	//div_action.style.marginLeft = 10 + "%";
 	//div_action.style.marginTop = 0 + "%";
 	//div_action.style.backgroundColor = "White";
 	div_action.id = "detail_act"
@@ -574,7 +591,7 @@ var affichageAction = function(obj, action){
 		maxLength(heure_tempsExecution, 3);
 	}
 	var minute_tempsExecution = document.createElement("input");
-	minute_tempsExecution.style.width = 5 + "%";
+	minute_tempsExecution.style.width = 7 + "%";
 	if(obj)
 		minute_tempsExecution.value = 1;
 	else
@@ -755,7 +772,7 @@ var affichagePage = function(doc){
 		for (var i = 0; i < enfant.length; i++) {
 			enfant[i].style.display = "block";
 		}
-
+		enfant[2].style.display = "none"; // permet de cacher les info globale
 		var choixEtage = document.getElementById("choixEtage");
 		while(choixEtage.firstChild) choixEtage.removeChild(choixEtage.firstChild);
 
@@ -1072,7 +1089,7 @@ var affichagePiece = function(doc){
 	var labellight_p = document.createElement("label");
 	labellight_p.style.float = "left";
 	labellight_p.style.width = 40 + "%";
-	labellight_p.innerHTML = "Lumiere :  ";
+	labellight_p.innerHTML = "<u>Lumiere :</u>  ";
 	var buttonlight_p = document.createElement("button");
 	buttonlight_p.style.float = "left";
 	buttonlight_p.style.width = 60 + "%";
@@ -1105,12 +1122,12 @@ var affichagePiece = function(doc){
 	var labeltemp_p = document.createElement("label");
 	labeltemp_p.style.float = "left";
 	labeltemp_p.style.width = 40 + "%";
-	labeltemp_p.innerHTML = "Temperature :  ";
+	labeltemp_p.innerHTML = "<u>Temperature :</u>  ";
 	var labeltempAff_p = document.createElement("label");
 	labeltempAff_p.style.float = "left";
 	labeltempAff_p.style.width = 12 + "%";
 	labeltempAff_p.id = "slider_temp";
-	labeltempAff_p.innerHTML = " " + doc.temp + "°C";
+	labeltempAff_p.innerHTML = "&nbsp;&nbsp;" + doc.temp + "°C";
 	var slidertemp_p = document.createElement("input");
 	slidertemp_p.type = "range";
 	slidertemp_p.min = 0;
@@ -1136,7 +1153,7 @@ var affichagePiece = function(doc){
 	var labelvolet_p = document.createElement("label");
 	labelvolet_p.style.float = "left";
 	labelvolet_p.style.width = 40 + "%";
-	labelvolet_p.innerHTML = "Volet :  ";
+	labelvolet_p.innerHTML = "<u>Volet :</u>  ";
 	var buttonvolet_p = document.createElement("button");
 	buttonvolet_p.style.float = "left";
 	buttonvolet_p.style.width = 60 + "%";
