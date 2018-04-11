@@ -35,11 +35,11 @@ etage2.pieces[1] = salleDeBains;
 home.etages[0] = etage1;
 home.etages[1] = etage2;
 
-lancementAction(four, cuisson, new Date(), 10);
-lancementAction(reveil, alarme, new Date(), 1);
+//lancementAction(four, cuisson, new Date(), 10);
+//lancementAction(reveil, alarme, new Date(), 1);
 var datatest = new Date();
 datatest.setHours(datatest.getHours() +1);
-lancementAction(four, cuisson, datatest, 10);
+//lancementAction(four, cuisson, datatest, 10);
 
 //permet de mettre a jour les taches toutes les secondes
 setInterval(generateListTasks, 1000);

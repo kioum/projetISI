@@ -52,6 +52,9 @@ div#etages {
 	margin-right: 270px;
 	margin-left: 270px;
 	background-color: 1f5673;
+	border-style: inset;
+    border-width: 2px;
+    border-color: 969a97; 
 }
 
 /*panneau lat?ral gauche*/
@@ -72,17 +75,6 @@ div#choixEtage {
 }
 #boutonsEtages:focus {
 	background: darkgrey;
-}
-
-/*au pied de page*/
-div#infoGlobale {
-	position: absolute;
-	width: 650px;
-	height: 100px;
-	bottom: 0;
-	left: 100px;
-	float: right;
-	background-color: 759fbc;
 }
 
 div#paramGen {
@@ -121,13 +113,14 @@ div#paramGen {
 
 	/*Fenetre action objet*/
 	#detail_objet {
+		margin-top: 10px;
 		text-align: left;
 		position: relative;
 		z-index: 1000;
 		height: 70%;
 		width: 100%;
 		float: left;
-		background-color:1f5673;
+		/*background-color:1f5673;*/
 	}
 	
 	#nom_piece {
@@ -155,7 +148,7 @@ div#paramGen {
 		height: 50%;
 		width: 100%;
 		float: left;
-		background-color: 1f5673;
+		/*background-color: 1f5673;*/
 	}
 	#listObjet_piece.p {
     float: right;
@@ -178,14 +171,14 @@ div#paramGen {
 	#miniplan_piece {
 		position: relative;
 		text-align: justify;
-		border: 2px solid white;
+		border: 2px solid 969a97;
 		padding: 10px;
 		border-radius: 25px;
 		z-index: 1000;
 		height: 150px;
 		width: 40%;
 		float: left;
-		background-color: BBBBBB;
+		background-color: 1f5673;
 	}
 	
 	#action_piece {
@@ -194,7 +187,8 @@ div#paramGen {
 		height: 150px;
 		width: 60%;
 		float: right;
-		background-color: FFFFFF;
+		background-color: 557389;
+		border: 2px inset 969a97;
 	}
 	
 	/*bouton fermer*/
@@ -216,13 +210,31 @@ div#paramGen {
 		background-color: 1f5673;
 	}
 
+
+/*au pied de page*/
+div#infoGlobale {
+	display: none;
+	position: absolute;
+	text-align : left;
+	width: 640px;
+	height: 110px;
+	bottom: 0;
+	left: 110px;
+	float: right;
+	background-color: 759fbc;
+	font: italic bold 12px/30px Georgia, serif;
+	border-radius: 5px 10px 10px 5px;	
+	box-shadow: 0px 0px 4px 0b2027, 0 0 50px 1898ce, 0 0 10px 1f5673;
+    border-style: inset;
+    border-width: 2px;
+    border-color: 969a97;   
+}
+
 	#volets {
-		/*position: relative;
-		z-index: 1000;
-		height: 50%;
-		width: 50%;*/
+		margin-left : 5px;
+		display: none;
 		text-align : justify;
-		background-color: AAAAAA;
+		/*background-color: AAAAAA;*/
 	}
 	
 	#vOuvert {
@@ -231,6 +243,9 @@ div#paramGen {
 		z-index: 1000;
 		height: 25%;
 		width: 25%;
+		border-style: outset;
+   	 	border-width: 2px;
+    	border-color: 969a97;
 	}
 	#vFermer {
 		position: relative;
@@ -238,38 +253,63 @@ div#paramGen {
 		z-index: 1000;
 		height: 25%;
 		width: 25%;
+		border-style: outset;
+   	 	border-width: 2px;
+    	border-color: 969a97;
 	}
-		#lumieres {
+	#lumieres {
+		margin-left : 5px;
+		margin-top : 5px;
+		display: none;
 		/*position: relative;
 		z-index: 1000;
 		height: 50%;
 		width: 50%;*/
-		background-color: AABBBB;
+		/*background-color: AABBBB;*/
 	}
 	
 	#lOuvert {
 		position: relative;
-		margin-left : 68px;
+		margin-left : 70px;
 		z-index: 1000;
 		height: 25%;
 		width: 25%;
+		border-style: outset;
+   	 	border-width: 2px;
+    	border-color: 969a97;
 	}
 	#lFermer {
 		position: relative;
-		margin-left : 40px;
+		margin-left : 41px;
 		z-index: 1000;
 		height: 25%;
 		width: 25%;
+		border-style: outset;
+   	 	border-width: 2px;
+    	border-color: 969a97;
 	}
-		#temperature {
+	#temperature {
+		margin-left : 5px;
+		display: none;
 		/*position: relative;
 		z-index: 1000;	
 		width: 50%;*/
 		height: 50px;
-		background-color: ACCCCC;
+		/*background-color: ACCCCC;*/
 	}
 	#slider {
-		margin-left: 20 px;
+		position: relative;
+		margin-left: 5%;
+	}
+	#temp_maison {
+		position: relative;
+		margin-left: 10%;
+		background-color: white;
+		height: 100%;
+		width: 100%;
+		border-style: inset;
+   	 	border-width: 2px;
+    	border-color: 969a97;
 	}
 	#nomObj {
 		text-align: left;
@@ -328,3 +368,4 @@ div#mytasks {
 #retour {
 	display: none;
 }
+
